@@ -9,6 +9,8 @@
  * @datum       06.10.2020
  * @file        ssd1306.h
  * @tested      AVR Atmega16
+ *
+ * @depend      font.h, twi.h
  * ---------------------------------------------------------------+
  */
 #include <avr/pgmspace.h>
@@ -462,7 +464,7 @@ char SSD1306_DrawChar(char character)
     idxCol++;
   }
 
-  // empty row
+  // empty column
   // -------------------------    
   status = TWI_MT_Send_Data(CLEAR_COLOR);
   // request - start TWI
