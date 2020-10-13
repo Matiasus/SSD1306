@@ -102,9 +102,5 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 // |          0xAF             |
 // +---------------------------+
 ```
-  
-## Demonstration
-
-
 ## Links
 - [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf)
