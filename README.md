@@ -6,8 +6,14 @@ Detailed information are described in [Datasheet SSD1306](https://cdn-shop.adafr
 ## Library
 C library is aimed for driving [SSD1306 0.96" OLED display](#demonstration) 128x64 through TWI's Atmega16.
 
+## Dependencies
+- [font.c](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/font.c)
+- [font.h](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/font.h)
+- [twi.c](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/twi.c)
+- [twi.h](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/twi.h)
+
 ### Usage
-Prior defined for MCU Atmega16. Need to be carefull with TWI ports definition.
+Prior defined for MCU Atmega16 / Atmega8. Need to be carefull with TWI ports definition.
 
 | PORT  | [Atmega16](http://ww1.microchip.com/downloads/en/devicedoc/doc2466.pdf) | [Atmega8](https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-2486-8-bit-AVR-microcontroller-ATmega8_L_datasheet.pdf) |
 | :---: | :---: | :---: |
