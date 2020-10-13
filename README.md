@@ -4,7 +4,7 @@
 Detailed information are described in [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf).
 
 ## Library
-C library is aimed for driving [SSD1306 0.96" OLED display](#demonstration) 128x32 through TWI's Atmega16.
+C library is aimed for driving [SSD1306 0.96" OLED display](#demonstration) 128x64 through TWI's Atmega16.
 
 ### Usage
 Prior defined for MCU Atmega16. Need to be carefull with TWI ports definition.
