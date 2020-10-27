@@ -364,13 +364,13 @@ char SSD1306_InverseScreen(void)
 }
 
 /**
- * @desc    SSD1306 Update Screen
+ * @desc    SSD1306 Screen On
  *
  * @param   void
  *
  * @return  char
  */
-char SSD1306_UpdateScreen(void)
+char SSD1306_ScreenOn(void)
 {
   // init status
   char status = INIT_STATUS;

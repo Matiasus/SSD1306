@@ -180,13 +180,13 @@
   char SSD1306_DrawString(char *);
 
   /**
-   * @desc    SSD1306 Update Screen
+   * @desc    SSD1306 Screen On
    *
    * @param   void
    *
    * @return  char
    */
-  char SSD1306_UpdateScreen(void);
+  char SSD1306_ScreenOn(void);
 
   /**
    * @desc    Update index
@@ -206,7 +206,6 @@
    * @return  void
    */
   char SSD1306_DrawLineHorizontal(char, char, char);
-
 
   /**
    * @desc    Send 1 Byte of data
