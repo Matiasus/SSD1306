@@ -103,7 +103,7 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 // +---------------------------+
 ```
 ## Functions
-- [char SSD1306_Init(void)](#ssd1306_init) - Init display
-- [char SSD1306_ClearScreen(char)](#ssd1306_clearscreen) - Clear screen
+- [SSD1306_Init ( void )](#ssd1306_init) - Init display
+- [SSD1306_ClearScreen ( char )](#ssd1306_clearscreen) - Clear screen
 ## Links
 - [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf)
