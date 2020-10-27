@@ -115,7 +115,7 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 - [SSD1306_DrawLineHorizontal (char, char, char)](#ssd1306_drawlinehorizontal) - Draw horizontal line
 
 ## Demonstration
-<img src="image/demonstration_ssd1306.png" />
+<img src="image/demonstration_ssd1306.jpg" />
 
 ## Links
 - [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf)
