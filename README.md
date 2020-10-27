@@ -1,4 +1,4 @@
-# SSD1306 0.96" OLED display
+# C Library for SSD1306 0.96" OLED display
 
 ## SSD1306 Description
 Detailed information are described in [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf).
