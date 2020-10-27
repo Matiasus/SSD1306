@@ -12,6 +12,8 @@ C library is aimed for driving [SSD1306 0.96" OLED display](#demonstration) 128x
 - [twi.c](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/twi.c)
 - [twi.h](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/twi.h)
 
+Font.c can be modified according to application requirements with form defined in font.c. Maximal permissible horizontal dimension is 8 bits.
+
 ### Usage
 Prior defined for MCU Atmega16 / Atmega8. Need to be carefull with TWI ports definition.
 
@@ -111,5 +113,9 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 - [SSD1306_DrawString (char*)](#ssd1306_drawstring) - Draw specific string
 - [SSD1306_UpdateScreen (void)](#ssd1306_updatescreen) - Display on
 - [SSD1306_DrawLineHorizontal (char, char, char)](#ssd1306_drawlinehorizontal) - Draw horizontal line
+
+## Demonstration
+<img src="img/demonstration_ssd1306.jpg" />
+
 ## Links
 - [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf)
