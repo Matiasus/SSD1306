@@ -103,7 +103,13 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 // +---------------------------+
 ```
 ## Functions
-- [SSD1306_Init ( void )](#ssd1306_init) - Init display
-- [SSD1306_ClearScreen ( char )](#ssd1306_clearscreen) - Clear screen
+- [SSD1306_Init (void)](#ssd1306_init) - Init display
+- [SSD1306_ClearScreen (char)](#ssd1306_clearscreen) - Clear screen
+- [SSD1306_InverseScreen (void)](#ssd1306_inversescreen) - Inverse screen
+- [SSD1306_SetPosition (char, char)](#ssd1306_setposition) - Set position
+- [SSD1306_DrawChar (char)](#ssd1306_drawchar) - Draw specific character
+- [SSD1306_DrawString (char*)](#ssd1306_drawstring) - Draw specific string
+- [SSD1306_UpdateScreen (void)](#ssd1306_updatescreen) - Display on
+- [SSD1306_DrawLineHorizontal (char, char, char)](#ssd1306_drawlinehorizontal) - Draw horizontal line
 ## Links
 - [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf)
