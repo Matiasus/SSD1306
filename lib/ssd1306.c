@@ -96,53 +96,63 @@
 /** @array Init command */
 const uint8_t INIT_SSD1306[] PROGMEM = {
   // number of initializers
-  16,
+  17,
   // 0xAE = Set Display OFF
   // -----------------------------------
   0, SSD1306_DISPLAY_OFF,
-
+  // 0xA8
+  1, SSD1306_SET_MUX_RATIO, 0x3F,
   // 0x20 = Set Memory Addressing Mode
   // -----------------------------------
   // 0x00 - Horizontal Addressing Mode
   // 0x01 - Vertical Addressing Mode
   // 0x02 - Page Addressing Mode (RESET)
   1, SSD1306_MEMORY_ADDR_MODE, 0x00,
-
   // 0x21 = Set Column Address
   // -----------------------------------
   // 0x00 - Start Column Address
   // 0xFF - End Column Address
   2, SSD1306_SET_COLUMN_ADDR, START_COLUMN_ADDR, END_COLUMN_ADDR,
-
   // 0x22 = Set Page Address
   // -----------------------------------
   // 0x00 - Start Column Address
   // 0x07 - End Column Address
   2, SSD1306_SET_PAGE_ADDR, START_PAGE_ADDR, END_PAGE_ADDR,
-
-  1, SSD1306_SET_MUX_RATIO, 0x3F,
-  1, SSD1306_DISPLAY_OFFSET, 0x00,
   // 0x40
   0, SSD1306_SET_START_LINE,
-  // 0xA0
-  0, SSD1306_SEG_REMAP,
-  // 0xC0
-  0, SSD1306_COM_SCAN_DIR,
-  1, SSD1306_COM_PIN_CONF, 0x02,
-  1, SSD1306_SET_CONTRAST, 0xaF,
+  // 0xD3
+  1, SSD1306_DISPLAY_OFFSET, 0x00,
+  // 0xA0 / remap 0xA1
+  0, SSD1306_SEG_REMAP_OP,
+  // 0xC0 / remap 0xC8
+  0, SSD1306_COM_SCAN_DIR_OP,
+  // 0xDA
+  1, SSD1306_COM_PIN_CONF, 0x12,
+  // 0x81
+  1, SSD1306_SET_CONTRAST, 0x7F,
   // 0xA4
   0, SSD1306_DIS_ENT_DISP_ON,
   // 0xA6
   0, SSD1306_DIS_NORMAL,
+  // 0xD5
   1, SSD1306_SET_OSC_FREQ, 0x80,
+  // 0xD9, 1st Period = higher value less blinking
+  1, SSD1306_SET_PRECHARGE, 0xc2,
+  // Set V COMH Deselect, reset value 0x22 = 0,77xUcc
+  1, SSD1306_VCOM_DESELECT, 0x20,
+  // 0x8D
   1, SSD1306_SET_CHAR_REG, 0x14,
   // 0xAF = Set Display ON
   // -----------------------------------
-  0, SSD1306_DISPLAY_ON
+//  0, SSD1306_DISPLAY_ON
 };
 
-// @var set area
-volatile unsigned int set_area = (END_PAGE_ADDR - START_PAGE_ADDR + 1) * (END_COLUMN_ADDR - START_COLUMN_ADDR + 1);
+// @var global -  set area
+unsigned int set_area = (END_PAGE_ADDR - START_PAGE_ADDR + 1) * (END_COLUMN_ADDR - START_COLUMN_ADDR + 1);
+// @var global - cache index column
+unsigned short int indexCol = START_COLUMN_ADDR;
+// @var global - cache index page
+unsigned short int indexPage = START_PAGE_ADDR;
 
 /**
  * @desc    SSD1306 Init
@@ -286,13 +296,115 @@ char SSD1306_Send_Command(char command)
 }
 
 /**
+ * @desc    SSD1306 Normal Colors
+ *
+ * @param   void
+ *
+ * @return  char
+ */
+char SSD1306_NormalScreen(void)
+{
+  // init status
+  char status = INIT_STATUS;
+
+  // TWI: start & SLAW
+  // -------------------------
+  status = SSD1306_Send_StartAndSLAW();
+  // request - start TWI
+  if (SSD1306_SUCCESS != status) {
+    // error
+    return status;
+  }
+
+  // send command
+  // -------------------------    
+  status = SSD1306_Send_Command(SSD1306_DIS_NORMAL);
+  // request - start TWI
+  if (SSD1306_SUCCESS != status) {
+    // error
+    return status;
+  }
+
+  // success
+  return SSD1306_SUCCESS;
+}
+
+/**
+ * @desc    SSD1306 Inverse Colors
+ *
+ * @param   void
+ *
+ * @return  char
+ */
+char SSD1306_InverseScreen(void)
+{
+  // init status
+  char status = INIT_STATUS;
+
+  // TWI: start & SLAW
+  // -------------------------
+  status = SSD1306_Send_StartAndSLAW();
+  // request - start TWI
+  if (SSD1306_SUCCESS != status) {
+    // error
+    return status;
+  }
+
+  // send command
+  // -------------------------    
+  status = SSD1306_Send_Command(SSD1306_DIS_INVERSE);
+  // request - start TWI
+  if (SSD1306_SUCCESS != status) {
+    // error
+    return status;
+  }
+
+  // success
+  return SSD1306_SUCCESS;
+}
+
+/**
+ * @desc    SSD1306 Update Screen
+ *
+ * @param   void
+ *
+ * @return  char
+ */
+char SSD1306_UpdateScreen(void)
+{
+  // init status
+  char status = INIT_STATUS;
+
+  // TWI: start & SLAW
+  // -------------------------
+  status = SSD1306_Send_StartAndSLAW();
+  // request - start TWI
+  if (SSD1306_SUCCESS != status) {
+    // error
+    return status;
+  }
+
+  // send command
+  // -------------------------    
+  status = SSD1306_Send_Command(SSD1306_DISPLAY_ON);
+  // request - start TWI
+  if (SSD1306_SUCCESS != status) {
+    // error
+    return status;
+  }
+
+  // success
+  return SSD1306_SUCCESS;
+}
+
+/**
  * @desc    SSD1306 Send Command
  *
  * @param   char
  *
  * @return  char
  */
-char SSD1306_ClearScreen(void)
+char SSD1306_ClearScreen(char color)
 {
   // init status
   char status = INIT_STATUS;
@@ -319,7 +431,7 @@ char SSD1306_ClearScreen(void)
   // -------------------------
   while (set_area--) {
     // send null data
-    status = TWI_MT_Send_Data(0x00);
+    status = TWI_MT_Send_Data(color);
     // request - start TWI
     if (SSD1306_SUCCESS != status) {
       // error
@@ -382,6 +494,8 @@ char SSD1306_SetPosition(char x, char y)
     // error
     return status;
   }
+  // update column index
+  indexCol = x;
 
   // SET PAGE address 
   // ***************************************************
@@ -409,10 +523,48 @@ char SSD1306_SetPosition(char x, char y)
     // error
     return status;
   }
+  // update column index
+  indexPage = y;
 
   // stop TWI
   TWI_Stop();
 
+  // success
+  return SSD1306_SUCCESS;
+}
+
+/**
+ * @desc    SSD1306 Check Text Poisition
+ *
+ * @param   char
+ * @param   char
+ *
+ * @return  char
+ */
+char SSD1306_UpdTxtPosition(void) 
+{
+  // init status
+  char status = INIT_STATUS;
+  // check end column position
+  unsigned short int x = indexCol+CHARS_COLS_LENGTH+1;
+  // check position
+  if ((x > END_COLUMN_ADDR) && (indexPage > (END_PAGE_ADDR-1))) {
+    // return out of range
+    return SSD1306_ERROR;
+  // if x out reach end but page in range
+  } else if ((x > END_COLUMN_ADDR) && (indexPage < END_PAGE_ADDR)) {
+    // update - column
+    indexCol = 0;
+    // update - page
+    indexPage = indexPage+1;
+    // update - null col, increment page
+    status = SSD1306_SetPosition(indexCol, indexPage);
+    // request
+    if (SSD1306_SUCCESS != status) {
+      // error
+      return status;
+    }
+  } 
   // success
   return SSD1306_SUCCESS;
 }
@@ -430,6 +582,12 @@ char SSD1306_DrawChar(char character)
   uint8_t idxCol=0;
   // init status
   char status = INIT_STATUS;
+
+  // update text position
+  if (SSD1306_UpdTxtPosition() != SSD1306_SUCCESS) {
+    // error
+    return SSD1306_ERROR;
+  }
 
   // TWI: start & SLAW
   // -------------------------
@@ -460,7 +618,7 @@ char SSD1306_DrawChar(char character)
       // error
       return status;
     }
-    // decrement
+    // increment
     idxCol++;
   }
 
@@ -473,11 +631,121 @@ char SSD1306_DrawChar(char character)
     return status;
   }
 
+  // increment global index col
+  indexCol = indexCol + CHARS_COLS_LENGTH + 1;
+
   // stop TWI
   TWI_Stop();
 
   // success
-  return SSD1306_SUCCESS; 
+  return SSD1306_SUCCESS;
+}
+
+/**
+ * @desc    Send 1 Byte of data
+ *
+ * @param   char
+ *
+ * @return  void
+ */
+char SSD1306_SendByte(char data)
+{
+  // init status
+  char status = INIT_STATUS;
+
+  // TWI: start & SLAW
+  // -------------------------
+  status = SSD1306_Send_StartAndSLAW();
+  // request - start TWI
+  if (SSD1306_SUCCESS != status) {
+    // error
+    return status;
+  }
+
+  // control byte data stream
+  // -------------------------    
+  status = TWI_MT_Send_Data(SSD1306_DATA_STREAM);
+  // request - start TWI
+  if (SSD1306_SUCCESS != status) {
+    // error
+    return status;
+  }
+  // send byte of data
+  // -------------------------    
+  status = TWI_MT_Send_Data(data);
+  // request - start TWI
+  if (SSD1306_SUCCESS != status) {
+    // error
+    return status;
+  }
+
+  // increment global index col
+  indexCol = indexCol + 1;
+
+  // stop TWI
+  TWI_Stop();
+
+  // success
+  return SSD1306_SUCCESS;
+}
+
+/**
+ * @desc    Send Bytes
+ *
+ * @param   char
+ * @param   char
+ *
+ * @return  void
+ */
+char SSD1306_SendBytes(char data, char length)
+{
+  // index
+  unsigned short int i = 0;
+  // init status
+  char status = INIT_STATUS;
+
+  // TWI: start & SLAW
+  // -------------------------
+  status = SSD1306_Send_StartAndSLAW();
+  // request - start TWI
+  if (SSD1306_SUCCESS != status) {
+    // error
+    return status;
+  }
+
+  // control byte data stream
+  // -------------------------    
+  status = TWI_MT_Send_Data(SSD1306_DATA_STREAM);
+  // request - start TWI
+  if (SSD1306_SUCCESS != status) {
+    // error
+    return status;
+  }
+  // loop through data
+  while (i++ < length) {
+    // draw line only within 1 page
+    if (indexCol < MAX_X) {
+      // send byte of data
+      // -------------------------    
+      status = TWI_MT_Send_Data(data);
+      // request - start TWI
+      if (SSD1306_SUCCESS != status) {
+        // error
+        return status;
+      }
+      // increment global index col
+      indexCol = indexCol + 1;
+    } else {
+      // end loop
+      break;
+    }
+  }
+
+  // stop TWI
+  TWI_Stop();
+
+  // success
+  return SSD1306_SUCCESS;
 }
 
 /**
@@ -508,3 +776,35 @@ char SSD1306_DrawString(char *str)
   // success
   return SSD1306_SUCCESS;
 }
+
+/**
+ * @desc    Draw pixel
+ *
+ * @param   char
+ * @param   char
+ *
+ * @return  void
+ */
+char SSD1306_DrawLineHorizontal(char x, char y, char len)
+{
+  char page = 0;
+  char pixel = 0;
+
+  if ((x > MAX_X) && (y > MAX_Y)) {
+    // out of range
+    return SSD1306_ERROR;
+  }
+  // y/8
+  page = y / 8;
+  // which pixel
+  pixel |= 1 << (y % 8);
+
+  // send position
+  SSD1306_SetPosition(x, page);
+  // draw pixel
+  SSD1306_SendBytes(pixel, len);
+
+  // success
+  return SSD1306_SUCCESS;  
+}
+
