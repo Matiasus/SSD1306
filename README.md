@@ -12,6 +12,8 @@ C library is aimed for driving [SSD1306 0.96" OLED display](#demonstration) 128x
 - [twi.c](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/twi.c)
 - [twi.h](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/twi.h)
 
+Font should be imported with different size but maximal horizontal dimension is 8 bits. Font have to be in form of two dimensional like defined into font.c.
+
 ### Usage
 Prior defined for MCU Atmega16 / Atmega8. Need to be carefull with TWI ports definition.
 
