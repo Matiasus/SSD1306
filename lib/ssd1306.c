@@ -96,7 +96,7 @@
 /** @array Init command */
 const uint8_t INIT_SSD1306[] PROGMEM = {
   // number of initializers
-  17,
+  18,
   // 0xAE = Set Display OFF
   // -----------------------------------
   0, SSD1306_DISPLAY_OFF,
@@ -144,7 +144,7 @@ const uint8_t INIT_SSD1306[] PROGMEM = {
   1, SSD1306_SET_CHAR_REG, 0x14,
   // 0xAF = Set Display ON
   // -----------------------------------
-//  0, SSD1306_DISPLAY_ON
+  0, SSD1306_DISPLAY_ON
 };
 
 // @var global -  set area
@@ -364,13 +364,13 @@ char SSD1306_InverseScreen(void)
 }
 
 /**
- * @desc    SSD1306 Screen On
+ * @desc    SSD1306 Update Screen On
  *
  * @param   void
  *
  * @return  char
  */
-char SSD1306_ScreenOn(void)
+char SSD1306_UpdateScreen(void)
 {
   // init status
   char status = INIT_STATUS;
@@ -400,14 +400,23 @@ char SSD1306_ScreenOn(void)
 /**
  * @desc    SSD1306 Send Command
  *
- * @param   char
+ * @param   void
  *
  * @return  char
  */
-char SSD1306_ClearScreen(char color)
+char SSD1306_ClearScreen(void)
 {
   // init status
   char status = INIT_STATUS;
+  short int i = 0;
+
+  // update - null col, increment page
+  status = SSD1306_SetPosition(0, 0);
+  // request
+  if (SSD1306_SUCCESS != status) {
+    // error
+    return status;
+  }
 
   // TWI: start & SLAW
   // -------------------------
@@ -429,15 +438,18 @@ char SSD1306_ClearScreen(char color)
 
   // erase whole area
   // -------------------------
-  while (set_area--) {
+  while (i < set_area) {
     // send null data
-    status = TWI_MT_Send_Data(color);
+    status = TWI_MT_Send_Data(0x00);
     // request - start TWI
     if (SSD1306_SUCCESS != status) {
       // error
       return status;
     }
+    // increment
+    i++;
   }
+
 
   // stop TWI
   TWI_Stop();
@@ -579,7 +591,7 @@ char SSD1306_UpdTxtPosition(void)
 char SSD1306_DrawChar(char character)
 {
   // variables
-  uint8_t idxCol=0;
+  uint8_t idxCol = 0;
   // init status
   char status = INIT_STATUS;
 
@@ -609,7 +621,6 @@ char SSD1306_DrawChar(char character)
 
   // loop through 5 bits
   while (idxCol < CHARS_COLS_LENGTH) {
-
     // send control byte data
     // -------------------------    
     status = TWI_MT_Send_Data(pgm_read_byte(&FONTS[character-32][idxCol]));
@@ -690,7 +701,7 @@ char SSD1306_SendByte(char data)
 }
 
 /**
- * @desc    Send Bytes
+ * @desc    Send Same Bytes
  *
  * @param   char
  * @param   char
@@ -778,8 +789,9 @@ char SSD1306_DrawString(char *str)
 }
 
 /**
- * @desc    Draw pixel
+ * @desc    Draw horizontal line
  *
+ * @param   char
  * @param   char
  * @param   char
  *
@@ -790,11 +802,12 @@ char SSD1306_DrawLineHorizontal(char x, char y, char len)
   char page = 0;
   char pixel = 0;
 
+  // if out of range
   if ((x > MAX_X) && (y > MAX_Y)) {
     // out of range
     return SSD1306_ERROR;
   }
-  // y/8
+  // find page
   page = y / 8;
   // which pixel
   pixel |= 1 << (y % 8);

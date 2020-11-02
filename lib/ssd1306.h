@@ -118,11 +118,11 @@
   /**
    * @desc    SSD1306 Clear Screen
    *
-   * @param   char
+   * @param   void
    *
    * @return  char
    */
-  char SSD1306_ClearScreen(char);
+  char SSD1306_ClearScreen(void);
 
   /**
    * @desc    SSD1306 Normal Colors
@@ -180,13 +180,13 @@
   char SSD1306_DrawString(char *);
 
   /**
-   * @desc    SSD1306 Screen On
+   * @desc    SSD1306 Update Screen On
    *
    * @param   void
    *
    * @return  char
    */
-  char SSD1306_ScreenOn(void);
+  char SSD1306_UpdateScreen(void);
 
   /**
    * @desc    Update index
@@ -200,6 +200,7 @@
   /**
    * @desc    Draw line horizontal
    *
+   * @param   char
    * @param   char
    * @param   char
    *
@@ -217,7 +218,7 @@
   char SSD1306_SendByte(char);
 
   /**
-   * @desc    Send Bytes
+   * @desc    Send Same Bytes
    *
    * @param   char
    * @param   char
