@@ -15,6 +15,7 @@
  */
 
 // include libraries
+#include <stdio.h>
 #include "lib/ssd1306.h"
 
 /**
@@ -31,18 +32,16 @@ int main(void)
 
   // clear screen
   SSD1306_ClearScreen();
-
-  // set position
-  SSD1306_SetPosition(5, 0);
-
+  // draw line
+  SSD1306_DrawLineHorizontal(4, 4, 115);
+  // set position x, y
+  SSD1306_SetPosition(5, 1);
   // draw string
-  SSD1306_DrawString(" 0.96\" OLED SSD1306");
-
-  // set position
-  SSD1306_SetPosition(30, 1);
-
-  // draw string
-  SSD1306_DrawString("by Matiasus");
+  SSD1306_DrawString("SSD1306 OLED DRIVER");
+  // draw line
+  SSD1306_DrawLineHorizontal(4, 18, 115);
+  // update
+  SSD1306_UpdateScreen();
 
   // return value
   return 0;
