@@ -144,7 +144,7 @@
    *
    * @return  char
    */
-  char SSD1306_InverseScreen(void);
+  char SSD1306_InverseScreen (void);
 
   /**
    * @desc    SSD1306 Check Text Poisition
