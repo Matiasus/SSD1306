@@ -86,14 +86,13 @@
 
   // @var set area
   unsigned int set_area;
-
-  // cache index column
+  // @var cache index column
   unsigned short int indexCol;
-  // cache index page
+  // @var cache index page
   unsigned short int indexPage;
 
   /**
-   * @desc    SSD1306 Init
+   * @desc    SSD1306 Init - set frequency
    *
    * @param   void
    *
@@ -147,7 +146,7 @@
   char SSD1306_InverseScreen (void);
 
   /**
-   * @desc    SSD1306 Check Text Poisition
+   * @desc    SSD1306 Check Text Position
    *
    * @param   void
    *
@@ -172,7 +171,7 @@
    *
    * @return  char
    */
-  char SSD1306_DrawChar(char);
+  char SSD1306_DrawChar (char);
 
   /**
    * @desc    SSD1306 Draw String
@@ -193,7 +192,7 @@
   char SSD1306_UpdateScreen (void);
 
   /**
-   * @desc    Update index
+   * @desc    SSD1306 Update indexes
    *
    * @param   char
    *
@@ -202,7 +201,7 @@
   void SSD1306_UpdateIndexes (char);
 
   /**
-   * @desc    Draw line horizontal
+   * @desc    SSD1306 Draw line horizontal
    *
    * @param   char
    * @param   char
@@ -213,7 +212,7 @@
   char SSD1306_DrawLineHorizontal (char, char, char);
 
   /**
-   * @desc    Send 1 Byte of data
+   * @desc    SSD1306 Send Byte
    *
    * @param   char
    *
@@ -222,7 +221,7 @@
   char SSD1306_SendByte (char);
 
   /**
-   * @desc    Send Same Bytes
+   * @desc    SSD1306 Send Bytes
    *
    * @param   char
    * @param   char
