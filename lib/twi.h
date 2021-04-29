@@ -1,76 +1,46 @@
 /** 
- * ---------------------------------------------------+ 
+ * ---------------------------------------------------------------+ 
  * @desc        Two Wire Interface / I2C Communication
- * ---------------------------------------------------+ 
+ * ---------------------------------------------------------------+ 
  *              Copyright (C) 2020 Marian Hrinko.
  *              Written by Marian Hrinko (mato.hrinko@gmail.com)
  *
  * @author      Marian Hrinko
  * @datum       06.09.2020
  * @file        twi.h
- * @tested      AVR Atmega16
- * ---------------------------------------------------
+ * @tested      AVR Atmega16, ATmega8, Atmega328
+ *
+ * @depend      
+ * ---------------------------------------------------------------+
+ * @usage       Basic Master Transmit Operation
  */
-
-#include <stdio.h>
-#include <avr/io.h>
 
 #ifndef __TWI_H__
 #define __TWI_H__
 
-  // define clock
-  #if defined(__AVR_ATmega8__)
-    #define _FCPU 8000000
-  #elif defined(__AVR_ATmega16__)
-    #define _FCPU 16000000
-  #endif
-
   // define register for TWI communication
-  #if defined(__AVR_ATmega16__)
-    #define TWI_TWAR TWAR // TWI (Slave) Address Register
-    #define TWI_TWBR TWBR // TWI Bit Rate Register
-    #define TWI_TWDR TWDR // TWI Data Register
-    #define TWI_TWCR TWCR // TWI Control Register
-    #define TWI_TWSR TWSR // TWI Status Register
+  // -------------------------------------------
+  #if defined(__AVR_ATmega16__) || defined(__AVR_ATmega8__) || defined(__AVR_ATmega328P__)
+
+    #define TWI_TWAR            TWAR // TWI (Slave) Address Register
+    #define TWI_TWBR            TWBR // TWI Bit Rate Register
+    #define TWI_TWDR            TWDR // TWI Data Register
+    #define TWI_TWCR            TWCR // TWI Control Register
+    #define TWI_TWSR            TWSR // TWI Status Register
+
   #endif
 
-  // TWI CLK frequency
-  //  @param TWBR
-  //  @param Prescaler
-  //    TWPS1 TWPS0  - PRESCALER
-  //      0     0    -     1
-  //      0     1    -     4
-  //      1     0    -    16
-  //      1     1    -    64
-  #define TWI_FREQ(BIT_RATE, PRESCALER) { TWI_TWBR = BIT_RATE; TWI_TWSR |= (TWI_TWSR & 0x03) | PRESCALER; }
+  // Success
+  // -------------------------------------------
+  #ifndef SUCCESS
+    #define SUCCESS             0
+  #endif
 
-  // TWI start condition
-  // (1 <<  TWEN) - TWI Enable
-  // (1 << TWINT) - TWI Interrupt Flag - must be cleared by set
-  // (1 << TWSTA) - TWI Start
-  #define TWI_START() { TWI_TWCR = (1 << TWEN) | (1 << TWINT) | (1 << TWSTA); }
-
-  // TWI enable
-  // (1 <<  TWEN) - TWI Enable
-  // (1 << TWINT) - TWI Interrupt Flag - must be cleared by set
-  #define TWI_ENABLE() { TWI_TWCR = (1 << TWEN) | (1 << TWINT); }
-
-  // TWI stop condition
-  // (1 <<  TWEN) - TWI Enable
-  // (1 << TWINT) - TWI Interrupt Flag - must be cleared by set
-  // (1 << TWSTO) - TWI Stop
-  #define TWI_STOP() { TWI_TWCR = (1 << TWEN) | (1 << TWINT) | (1 << TWSTO); }
-
-  // TWI test if TWINT Flag is set
-  #define TWI_WAIT_TILL_TWINT_IS_SET() { while (!(TWI_TWCR & (1 << TWINT))); }
-
-  // TWI status mask
-  #define TWI_STATUS (TWI_TWSR & 0xF8)
- 
-  // success return value
-  #define SUCCESS 0
-  // success return value
-  #define ERROR 1
+  // Error
+  // -------------------------------------------
+  #ifndef ERROR
+    #define ERROR               1
+  #endif 
 
   // ++++++++++++++++++++++++++++++++++++++++++
   //
@@ -113,9 +83,46 @@
   #define TWI_ST_DATA_ACK       0xB8  // Data byte in TWDR has been transmitted; ACK has been received
   #define TWI_ST_DATA_NACK      0xC0  // Data byte in TWDR has been transmitted; NOT ACK has been received
   #define TWI_ST_DATA_LOST_ACK  0xC8  // Last data byte in TWDR has been transmitted (TWEA = '0'); ACK has been received
+
+  // TWI CLK frequency
+  // -------------------------------------------
+  //  @param TWBR
+  //  @param Prescaler
+  //    TWPS1 TWPS0  - PRESCALER
+  //      0     0    -     1
+  //      0     1    -     4
+  //      1     0    -    16
+  //      1     1    -    64
+  #define TWI_FREQ(BIT_RATE, PRESCALER) { TWI_TWBR = BIT_RATE; TWI_TWSR |= (TWI_TWSR & 0x03) | PRESCALER; }
+
+  // TWI start condition
+  // -------------------------------------------
+  // (1 <<  TWEN) - TWI Enable
+  // (1 << TWINT) - TWI Interrupt Flag - must be cleared by set
+  // (1 << TWSTA) - TWI Start
+  #define TWI_START()                   { TWI_TWCR = (1 << TWEN) | (1 << TWINT) | (1 << TWSTA); }
+
+  // TWI stop condition
+  // -------------------------------------------
+  // (1 <<  TWEN) - TWI Enable
+  // (1 << TWINT) - TWI Interrupt Flag - must be cleared by set
+  // (1 << TWSTO) - TWI Stop
+  #define TWI_STOP()                    { TWI_TWCR = (1 << TWEN) | (1 << TWINT) | (1 << TWSTO); }
+
+  // TWI enable
+  // -------------------------------------------
+  // (1 <<  TWEN) - TWI Enable
+  // (1 << TWINT) - TWI Interrupt Flag - must be cleared by set
+  #define TWI_ENABLE()                  { TWI_TWCR = (1 << TWEN) | (1 << TWINT); }
+
+  // TWI test if TWINT Flag is set
+  #define TWI_WAIT_TILL_TWINT_IS_SET()  { while (!(TWI_TWCR & (1 << TWINT))); }
+
+  // TWI status mask
+  #define TWI_STATUS                    ( TWI_TWSR & 0xF8 )
   
   /**
-   * @desc    TWI init - initialise communication
+   * @desc    TWI init
    *
    * @param   void
    *

@@ -7,12 +7,15 @@
  *
  * @author      Marian Hrinko
  * @datum       06.10.2020
- * @file        ssd1306.h
- * @tested      AVR Atmega16
+ * @file        ssd1306.c
+ * @tested      AVR Atmega16, ATmega8, Atmega328
  *
  * @depend      font.h, twi.h
  * ---------------------------------------------------------------+
+ * @usage       Basic Setup for OLED
  */
+ 
+
 #include <avr/pgmspace.h>
 #include "font.h"
 #include "twi.h"
@@ -161,7 +164,7 @@ unsigned short int indexPage = START_PAGE_ADDR;
  *
  * @return  char
  */
-char SSD1306_Init(void)
+char SSD1306_Init (void)
 { 
   // variables
   const uint8_t *commands = INIT_SSD1306;
@@ -234,7 +237,7 @@ char SSD1306_Init(void)
  *
  * @return  char
  */
-char SSD1306_Send_StartAndSLAW(void)
+char SSD1306_Send_StartAndSLAW (void)
 {
   // init status
   char status = INIT_STATUS;
@@ -268,7 +271,7 @@ char SSD1306_Send_StartAndSLAW(void)
  *
  * @return  char
  */
-char SSD1306_Send_Command(char command)
+char SSD1306_Send_Command (char command)
 {
   // init status
   char status = INIT_STATUS;
@@ -302,7 +305,7 @@ char SSD1306_Send_Command(char command)
  *
  * @return  char
  */
-char SSD1306_NormalScreen(void)
+char SSD1306_NormalScreen (void)
 {
   // init status
   char status = INIT_STATUS;
@@ -336,7 +339,7 @@ char SSD1306_NormalScreen(void)
  *
  * @return  char
  */
-char SSD1306_InverseScreen(void)
+char SSD1306_InverseScreen (void)
 {
   // init status
   char status = INIT_STATUS;
@@ -370,7 +373,7 @@ char SSD1306_InverseScreen(void)
  *
  * @return  char
  */
-char SSD1306_UpdateScreen(void)
+char SSD1306_UpdateScreen (void)
 {
   // init status
   char status = INIT_STATUS;
@@ -404,7 +407,7 @@ char SSD1306_UpdateScreen(void)
  *
  * @return  char
  */
-char SSD1306_ClearScreen(void)
+char SSD1306_ClearScreen (void)
 {
   // init status
   char status = INIT_STATUS;
@@ -466,7 +469,7 @@ char SSD1306_ClearScreen(void)
  *
  * @return  char
  */
-char SSD1306_SetPosition(char x, char y) 
+char SSD1306_SetPosition (char x, char y) 
 {
   // variables
   char status = INIT_STATUS;
@@ -553,7 +556,7 @@ char SSD1306_SetPosition(char x, char y)
  *
  * @return  char
  */
-char SSD1306_UpdTxtPosition(void) 
+char SSD1306_UpdTxtPosition (void) 
 {
   // init status
   char status = INIT_STATUS;
@@ -588,7 +591,7 @@ char SSD1306_UpdTxtPosition(void)
  *
  * @return  void
  */
-char SSD1306_DrawChar(char character)
+char SSD1306_DrawChar (char character)
 {
   // variables
   uint8_t idxCol = 0;
@@ -659,7 +662,7 @@ char SSD1306_DrawChar(char character)
  *
  * @return  void
  */
-char SSD1306_SendByte(char data)
+char SSD1306_SendByte (char data)
 {
   // init status
   char status = INIT_STATUS;
@@ -708,7 +711,7 @@ char SSD1306_SendByte(char data)
  *
  * @return  void
  */
-char SSD1306_SendBytes(char data, char length)
+char SSD1306_SendBytes (char data, char length)
 {
   // index
   unsigned short int i = 0;
@@ -766,7 +769,7 @@ char SSD1306_SendBytes(char data, char length)
  *
  * @return  void
  */
-char SSD1306_DrawString(char *str)
+char SSD1306_DrawString (char *str)
 {
   // init status
   char status = INIT_STATUS;
@@ -797,7 +800,7 @@ char SSD1306_DrawString(char *str)
  *
  * @return  void
  */
-char SSD1306_DrawLineHorizontal(char x, char y, char len)
+char SSD1306_DrawLineHorizontal (char x, char y, char len)
 {
   char page = 0;
   char pixel = 0;

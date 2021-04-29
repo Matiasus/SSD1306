@@ -8,7 +8,7 @@
  * @author      Marian Hrinko
  * @datum       07.10.2020
  * @file        font.h
- * @tested      AVR Atmega16
+ * @tested      AVR Atmega16, Atmega8, Atmega328
  *
  * @depend      
  * ---------------------------------------------------------------+

@@ -1,18 +1,22 @@
 /** 
- * ---------------------------------------------------+ 
+ * ---------------------------------------------------------------+ 
  * @desc        Two Wire Interface / I2C Communication
- * ---------------------------------------------------+ 
+ * ---------------------------------------------------------------+ 
  *              Copyright (C) 2020 Marian Hrinko.
  *              Written by Marian Hrinko (mato.hrinko@gmail.com)
  *
  * @author      Marian Hrinko
  * @datum       06.09.2020
  * @file        twi.c
- * @tested      AVR Atmega16
- * ---------------------------------------------------
+ * @tested      AVR Atmega16, ATmega8, Atmega328
+ *
+ * @depend      
+ * ---------------------------------------------------------------+
+ * @usage       Master Transmit Operation
  */
  
 // include libraries
+#include <avr/io.h>
 #include "twi.h"
 
 /**
@@ -83,12 +87,12 @@ char TWI_MT_Send_SLAW(char address)
   // wait till flag set
   TWI_WAIT_TILL_TWINT_IS_SET();
 
-  // find
+  // test if SLA with WRITE acknowledged
   if (TWI_STATUS != TWI_MT_SLAW_ACK) {
     // return status
     return TWI_STATUS;
   }
-  // return found device address
+  // success
   return SUCCESS;
 }
 
@@ -109,12 +113,12 @@ char TWI_MT_Send_Data(char data)
   // wait till flag set
   TWI_WAIT_TILL_TWINT_IS_SET();
 
-  // find
+  // test if data acknowledged
   if (TWI_STATUS != TWI_MT_DATA_ACK) {
     // return status
     return TWI_STATUS;
   }
-  // return found device address
+  // success
   return SUCCESS;
 }
 
@@ -135,12 +139,12 @@ char TWI_MR_Send_SLAR(char address)
   // wait till flag set
   TWI_WAIT_TILL_TWINT_IS_SET();
 
-  // find
+  // test if SLA with READ acknowledged
   if (TWI_STATUS != TWI_MR_SLAR_ACK) {
     // return status
     return TWI_STATUS;
   }
-  // return found device address
+  // success
   return SUCCESS;
 }
 
