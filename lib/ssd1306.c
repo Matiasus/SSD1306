@@ -12,7 +12,7 @@
  *
  * @depend      font.h, twi.h
  * ---------------------------------------------------------------+
- * @usage       Basic Setup for OLED
+ * @usage       Basic Setup for OLED Display
  */
  
 
