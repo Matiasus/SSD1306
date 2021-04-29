@@ -8,17 +8,27 @@
  * @author      Marian Hrinko
  * @datum       06.10.2020
  * @file        ssd1306.h
- * @tested      AVR Atmega16
+ * @tested      AVR Atmega16, ATmega8, Atmega328
  *
- * @depend      twi library
+ * @depend      
  * ---------------------------------------------------------------+
+ * @usage       Basic Setup for OLED Display
  */
 
 #ifndef __SSD1306_H__
 #define __SSD1306_H__
 
-  #define SSD1306_SUCCESS              0
-  #define SSD1306_ERROR                1
+  // Success
+  // -------------------------------------------
+  #ifndef SSD1306_SUCCESS
+    #define SSD1306_SUCCESS         0
+  #endif
+
+  // Error
+  // -------------------------------------------
+  #ifndef SSD1306_ERROR
+    #define SSD1306_ERROR           1
+  #endif 
 
   // Address definition
   // -----------------------------------
@@ -56,12 +66,6 @@
   #define SSD1306_SET_PRECHARGE     0xD9
   #define SSD1306_VCOM_DESELECT     0xDB
 
-
-  // Characters definition
-  // -----------------------------------
-  // number of columns for chars
-// #define CHARS_COLS_LENGTH            5
-
   // Clear Color
   // -----------------------------------
   #define CLEAR_COLOR               0x00
@@ -72,13 +76,13 @@
 
   // AREA definition
   // -----------------------------------
-  #define START_PAGE_ADDR              0
-  #define END_PAGE_ADDR                7
-  #define START_COLUMN_ADDR            0
-  #define END_COLUMN_ADDR            127
+  #define START_PAGE_ADDR           0
+  #define END_PAGE_ADDR             7
+  #define START_COLUMN_ADDR         0
+  #define END_COLUMN_ADDR           127
 
-  #define MAX_X          END_COLUMN_ADDR
-  #define MAX_Y      (END_PAGE_ADDR+1)*8
+  #define MAX_X                     END_COLUMN_ADDR
+  #define MAX_Y                     (END_PAGE_ADDR+1)*8
 
   // @var set area
   unsigned int set_area;
@@ -95,7 +99,7 @@
    *
    * @return  char
    */
-  char SSD1306_Init(void);
+  char SSD1306_Init (void);
 
   /**
    * @desc    SSD1306 Send Start and SLAW request
@@ -104,7 +108,7 @@
    *
    * @return  char
    */
-  char SSD1306_Send_StartAndSLAW(void);
+  char SSD1306_Send_StartAndSLAW (void);
 
   /**
    * @desc    SSD1306 Send Command
@@ -113,7 +117,7 @@
    *
    * @return  char
    */
-  char SSD1306_Send_Command(char);
+  char SSD1306_Send_Command (char);
 
   /**
    * @desc    SSD1306 Clear Screen
@@ -122,7 +126,7 @@
    *
    * @return  char
    */
-  char SSD1306_ClearScreen(void);
+  char SSD1306_ClearScreen (void);
 
   /**
    * @desc    SSD1306 Normal Colors
@@ -131,7 +135,7 @@
    *
    * @return  char
    */
-  char SSD1306_NormalScreen(void);
+  char SSD1306_NormalScreen (void);
 
   /**
    * @desc    SSD1306 Inverse Colors
@@ -149,7 +153,7 @@
    *
    * @return  char
    */
-  char SSD1306_UpdTxtPosition(void);
+  char SSD1306_UpdTxtPosition (void);
 
   /**
    * @desc    SSD1306 Set Position
@@ -159,7 +163,7 @@
    *
    * @return  char
    */
-  char SSD1306_SetPosition(char, char);
+  char SSD1306_SetPosition (char, char);
 
   /**
    * @desc    SSD1306 Draw Character
@@ -177,7 +181,7 @@
    *
    * @return  char
    */
-  char SSD1306_DrawString(char *);
+  char SSD1306_DrawString (char *);
 
   /**
    * @desc    SSD1306 Update Screen On
@@ -186,7 +190,7 @@
    *
    * @return  char
    */
-  char SSD1306_UpdateScreen(void);
+  char SSD1306_UpdateScreen (void);
 
   /**
    * @desc    Update index
@@ -195,7 +199,7 @@
    *
    * @return  void
    */
-  void SSD1306_UpdateIndexes(char);
+  void SSD1306_UpdateIndexes (char);
 
   /**
    * @desc    Draw line horizontal
@@ -206,7 +210,7 @@
    *
    * @return  void
    */
-  char SSD1306_DrawLineHorizontal(char, char, char);
+  char SSD1306_DrawLineHorizontal (char, char, char);
 
   /**
    * @desc    Send 1 Byte of data
@@ -215,7 +219,7 @@
    *
    * @return  void
    */
-  char SSD1306_SendByte(char);
+  char SSD1306_SendByte (char);
 
   /**
    * @desc    Send Same Bytes
@@ -225,6 +229,6 @@
    *
    * @return  void
    */
-  char SSD1306_SendBytes(char, char);
+  char SSD1306_SendBytes (char, char);
 
 #endif
