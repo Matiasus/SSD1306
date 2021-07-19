@@ -26,7 +26,7 @@
  *
  * @return  void
  */
-void TWI_Init(void)
+void TWI_Init (void)
 {
   // +++++++++++++++++++++++++++++++++++++++++++++
   // Calculation fclk:
@@ -38,10 +38,10 @@ void TWI_Init(void)
   // TWBR = {(fcpu/fclk) - 16 } / (2*4^Prescaler)
   // +++++++++++++++++++++++++++++++++++++++++++++
   // @param1 value of TWBR, 
-  //    fclk = 400 kHz; TWBR = 3
-  //    fclk = 100 kHz; TWBR = 20
+  //  fclk = 400kHz (m16); TWBR = 3
+  //  fclk = 100kHz (m16); TWBR = 20
   // @param2 value of Prescaler = 1
-  TWI_FREQ(20, 1);
+  TWI_FREQ (3, 1);
 }
 
 /**
@@ -51,7 +51,7 @@ void TWI_Init(void)
  *
  * @return  char
  */
-char TWI_MT_Start(void)
+char TWI_MT_Start (void)
 {
   // null status flag
   TWI_TWSR &= ~0xA8;
@@ -77,7 +77,7 @@ char TWI_MT_Start(void)
  *
  * @return  char
  */
-char TWI_MT_Send_SLAW(char address)
+char TWI_MT_Send_SLAW (char address)
 {
   // SLA+W
   // ----------------------------------------------
@@ -103,7 +103,7 @@ char TWI_MT_Send_SLAW(char address)
  *
  * @return  char
  */
-char TWI_MT_Send_Data(char data)
+char TWI_MT_Send_Data (char data)
 {
   // DATA
   // ----------------------------------------------
@@ -129,7 +129,7 @@ char TWI_MT_Send_Data(char data)
  *
  * @return  char
  */
-char TWI_MR_Send_SLAR(char address)
+char TWI_MR_Send_SLAR (char address)
 {
   // SLA+R
   // ----------------------------------------------
@@ -155,12 +155,12 @@ char TWI_MR_Send_SLAR(char address)
  *
  * @return  void
  */
-void TWI_Stop(void)
+void TWI_Stop (void)
 {
   // End TWI
   // -------------------------------------------------
   // send stop sequence
-  TWI_STOP();
+  TWI_STOP ();
   // wait for TWINT flag is set
 //  TWI_WAIT_TILL_TWINT_IS_SET();
 }
