@@ -9,12 +9,13 @@
  * @datum       06.10.2020
  * @update      19.07.2021
  * @file        ssd1306.h
+ * @version     2.0
  * @tested      AVR Atmega328
  *
  * @depend      font.h, twi.h
  * ---------------------------------------------------------------+
  * @descr       Version 1.0 -> applicable for 1 display
- *              Version 2.0 -> applicable for more than 1 display
+ *              Version 2.0 -> rebuild to 'cacheMemLcd' array
  * ---------------------------------------------------------------+
  * @usage       Basic Setup for OLED Display
  */
@@ -86,12 +87,11 @@
   #define MAX_X                     END_COLUMN_ADDR
   #define MAX_Y                     (END_PAGE_ADDR+1)*8
 
+
+  // @var set area
+  unsigned int _counter;
   // @var set area
   unsigned int set_area;
-  // @var cache index column
-  unsigned short int indexCol;
-  // @var cache index page
-  unsigned short int indexPage;
 
   /**
    * @desc    SSD1306 Init - set frequency
@@ -123,11 +123,11 @@
   /**
    * @desc    SSD1306 Clear Screen
    *
-   * @param   uint8_t
+   * @param   void
    *
-   * @return  uint8_t
+   * @return  void
    */
-  uint8_t SSD1306_ClearScreen (uint8_t);
+  void SSD1306_ClearScreen (void);
 
   /**
    * @desc    SSD1306 Normal Colors
@@ -148,47 +148,44 @@
   uint8_t SSD1306_InverseScreen (uint8_t);
 
   /**
-   * @desc    SSD1306 Check Text Position
+   * @desc    SSD1306 Update text position
    *
-   * @param   uint8_t
+   * @param   void
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_UpdTxtPosition (uint8_t);
+  uint8_t SSD1306_UpdTxtPosition (void);
 
   /**
-   * @desc    SSD1306 Set Position
+   * @desc    SSD1306 Set position
    *
    * @param   uint8_t
    * @param   uint8_t
-   * @param   uint8_t
    *
-   * @return  char
+   * @return  void
    */
-  uint8_t SSD1306_SetPosition (uint8_t, uint8_t, uint8_t);
+  void SSD1306_SetPosition (uint8_t, uint8_t);
 
   /**
-   * @desc    SSD1306 Draw Character
+   * @desc    SSD1306 Draw character
    *
-   * @param   uint8_t
    * @param   char
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_DrawChar (uint8_t, char);
+  uint8_t SSD1306_DrawChar (char);
 
   /**
-   * @desc    SSD1306 Draw String
+   * @desc    SSD1306 Draw string
    *
-   * @param   uint8_t
    * @param   char *
    *
-   * @return  uint8_t
+   * @return  void
    */
-  uint8_t SSD1306_DrawString (uint8_t, char *);
+  void SSD1306_DrawString (char *);
 
   /**
-   * @desc    SSD1306 Update Screen On
+   * @desc    SSD1306 Update screen
    *
    * @param   uint8_t
    *
@@ -210,11 +207,10 @@
    *
    * @param   uint8_t
    * @param   uint8_t
-   * @param   uint8_t
    *
-   * @return  void
+   * @return  uint8_t
    */
-  uint8_t SSD1306_DrawPixel (uint8_t, uint8_t, uint8_t);
+  uint8_t SSD1306_DrawPixel (uint8_t, uint8_t);
 
   /**
    * @desc    Draw line
@@ -223,43 +219,9 @@
    * @param   uint8_t
    * @param   uint8_t
    * @param   uint8_t
-   * @param   uint8_t
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t, uint8_t);
-
-  /**
-   * @desc    SSD1306 Draw line horizontal
-   *
-   * @param   uint8_t
-   * @param   uint8_t
-   * @param   uint8_t
-   * @param   uint8_t
-   *
-   * @return  void
-   */
-  uint8_t SSD1306_DrawLineHorizontal (uint8_t, uint8_t, uint8_t, uint8_t);
-
-  /**
-   * @desc    SSD1306 Send byte
-   *
-   * @param   uint8_t
-   * @param   uint8_t
-   *
-   * @return  void
-   */
-  uint8_t SSD1306_SendByte (uint8_t, uint8_t);
-
-  /**
-   * @desc    SSD1306 Send same bytes
-   *
-   * @param   uint8_t
-   * @param   uint8_t
-   * @param   uint8_t
-   *
-   * @return  uint8_t
-   */
-  uint8_t SSD1306_SendSameBytes (uint8_t, uint8_t, uint8_t);
+  uint8_t SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t);
 
 #endif

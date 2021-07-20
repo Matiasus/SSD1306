@@ -14,7 +14,7 @@
  * @depend      ssd1306.h
  * ---------------------------------------------------------------+
  * @descr       Version 1.0 -> applicable for 1 display
- *              Version 2.0 -> applicable for more than 1 display
+ *              Version 2.0 -> rebuild to 'cacheMemLcd' array
  * ---------------------------------------------------------------+
  */
 
@@ -37,29 +37,27 @@ int main(void)
   SSD1306_Init (addr);
 
   // clear screen
-  SSD1306_ClearScreen (addr);
+  SSD1306_ClearScreen ();
+  // clear screen
+  SSD1306_ClearScreen ();
   // draw line
-  //SSD1306_DrawLineHorizontal (addr, 4, 4, 115);
-  // set position x, y
-  //SSD1306_SetPosition (addr, 1, 1);
-
-  //for (char i = 1; i < MAX_Y; i++) {
-    SSD1306_DrawPixel (addr, 0, 0);
-    SSD1306_DrawPixel (addr, 0, 1);
-    SSD1306_DrawPixel (addr, 0, 2);
-    SSD1306_DrawPixel (addr, 1, 1);
-    SSD1306_DrawPixel (addr, 2, 2);
-    SSD1306_DrawPixel (addr, 3, 3);
-    SSD1306_DrawPixel (addr, 4, 4);
-    //SSD1306_DrawLine (addr, 0, MAX_X-1, MAX_Y-1, MAX_Y-1);
-  //}
-
+  SSD1306_DrawLine (0, MAX_X, 4, 4);
+  // set position
+  SSD1306_SetPosition (7, 1);
   // draw string
-  //SSD1306_DrawString (addr, "SSD1306 OLED DRIVER");
+  SSD1306_DrawString ("SSD1306 OLED DRIVER");
   // draw line
-  //SSD1306_DrawLineHorizontal (addr, 4, 18, 115);
+  SSD1306_DrawLine (0, MAX_X, 18, 18);
+  // set position
+  SSD1306_SetPosition (40, 3);
+  // draw string
+  SSD1306_DrawString ("MATIASUS");
+  // set position
+  SSD1306_SetPosition (53, 5);
+  // draw string
+  SSD1306_DrawString ("2021");
   // update
-  //SSD1306_UpdateScreen (addr);
+  SSD1306_UpdateScreen (addr);
 
   // return value
   return 0;
