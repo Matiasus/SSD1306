@@ -148,6 +148,15 @@
   uint8_t SSD1306_InverseScreen (uint8_t);
 
   /**
+   * @desc    SSD1306 Update screen
+   *
+   * @param   uint8_t
+   *
+   * @return  uint8_t
+   */
+  uint8_t SSD1306_UpdateScreen (uint8_t);
+
+  /**
    * @desc    SSD1306 Update text position
    *
    * @param   void
@@ -183,24 +192,6 @@
    * @return  void
    */
   void SSD1306_DrawString (char *);
-
-  /**
-   * @desc    SSD1306 Update screen
-   *
-   * @param   uint8_t
-   *
-   * @return  uint8_t
-   */
-  uint8_t SSD1306_UpdateScreen (uint8_t);
-
-  /**
-   * @desc    SSD1306 Update indexes
-   *
-   * @param   uint8_t
-   *
-   * @return  void
-   */
-  void SSD1306_UpdateIndexes (uint8_t);
 
   /**
    * @desc    Draw pixel
