@@ -562,7 +562,6 @@ uint8_t SSD1306_DrawPixel (uint8_t x, uint8_t y)
 
 /**
  * @desc    Draw line by Bresenham algoritm
- * @surce   https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
  *  
  * @param   uint8_t x start position / 0 <= cols <= MAX_X-1
  * @param   uint8_t x end position   / 0 <= cols <= MAX_X-1
