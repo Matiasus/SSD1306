@@ -87,11 +87,8 @@
   #define MAX_X                     END_COLUMN_ADDR
   #define MAX_Y                     (END_PAGE_ADDR+1)*8
 
-
   // @var set area
   unsigned int _counter;
-  // @var set area
-  unsigned int set_area;
 
   /**
    * @desc    SSD1306 Init
