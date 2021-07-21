@@ -38,8 +38,6 @@ int main(void)
 
   // clear screen
   SSD1306_ClearScreen ();
-  // clear screen
-  SSD1306_ClearScreen ();
   // draw line
   SSD1306_DrawLine (0, MAX_X, 4, 4);
   // set position
