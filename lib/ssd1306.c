@@ -156,9 +156,6 @@ const uint8_t INIT_SSD1306[] PROGMEM = {
 // @var array Chache memory Lcd 8 * 128 = 1024
 static char cacheMemLcd[CACHE_SIZE_MEM];
 
-// @var global -  set area
-unsigned int set_area = (END_PAGE_ADDR - START_PAGE_ADDR + 1) * (END_COLUMN_ADDR - START_COLUMN_ADDR + 1);
-
 /**
  * @desc    SSD1306 Init
  *
