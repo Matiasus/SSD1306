@@ -94,7 +94,7 @@
   unsigned int set_area;
 
   /**
-   * @desc    SSD1306 Init - set frequency
+   * @desc    SSD1306 Init
    *
    * @param   uint8_t
    *
@@ -112,7 +112,7 @@
   uint8_t SSD1306_Send_StartAndSLAW (uint8_t);
 
   /**
-   * @desc    SSD1306 Send Command
+   * @desc    SSD1306 Send command
    *
    * @param   uint8_t
    *
@@ -121,7 +121,7 @@
   uint8_t SSD1306_Send_Command (uint8_t);
 
   /**
-   * @desc    SSD1306 Clear Screen
+   * @desc    SSD1306 Clear screen
    *
    * @param   void
    *
@@ -130,7 +130,7 @@
   void SSD1306_ClearScreen (void);
 
   /**
-   * @desc    SSD1306 Normal Colors
+   * @desc    SSD1306 Normal colors
    *
    * @param   uint8_t
    *
@@ -139,7 +139,7 @@
   uint8_t SSD1306_NormalScreen (uint8_t);
 
   /**
-   * @desc    SSD1306 Inverse Colors
+   * @desc    SSD1306 Inverse colors
    *
    * @param   uint8_t
    *
