@@ -120,7 +120,7 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 - [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline) - Draw line
 
 ## Demonstration
-<img src="img/ssd1306_v20.jpg" />
+<img src="img/ssd1306_v20.png" />
 
 ## Links
 - [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf)
