@@ -106,7 +106,6 @@ const uint8_t INIT_SSD1306[] PROGMEM = {
   // number of initializers
   18,
   // 0xAE = Set Display OFF
-  // -----------------------------------
   0, SSD1306_DISPLAY_OFF,
   // 0xA8
   1, SSD1306_SET_MUX_RATIO, 0x3F,
@@ -151,7 +150,6 @@ const uint8_t INIT_SSD1306[] PROGMEM = {
   // 0x8D
   1, SSD1306_SET_CHAR_REG, 0x14,
   // 0xAF = Set Display ON
-  // -----------------------------------
   0, SSD1306_DISPLAY_ON
 };
 
@@ -194,7 +192,7 @@ uint8_t SSD1306_Init (uint8_t address)
     return status;
   }
 
-  // loop throuh commands
+  // loop through commands
   while (no_of_commands) {
 
     // number of arguments
@@ -317,7 +315,7 @@ uint8_t SSD1306_NormalScreen (uint8_t address)
   // TWI: start & SLAW
   // -------------------------
   status = SSD1306_Send_StartAndSLAW (address);
-  // request - start TWI
+  // request succesfull
   if (SSD1306_SUCCESS != status) {
     // error
     return status;
@@ -326,7 +324,7 @@ uint8_t SSD1306_NormalScreen (uint8_t address)
   // send command
   // -------------------------    
   status = SSD1306_Send_Command (SSD1306_DIS_NORMAL);
-  // request - start TWI
+  // request succesfull
   if (SSD1306_SUCCESS != status) {
     // error
     return status;
@@ -351,7 +349,7 @@ uint8_t SSD1306_InverseScreen (uint8_t address)
   // TWI: start & SLAW
   // -------------------------
   status = SSD1306_Send_StartAndSLAW (address);
-  // request - start TWI
+  // request succesfull
   if (SSD1306_SUCCESS != status) {
     // error
     return status;
@@ -360,7 +358,7 @@ uint8_t SSD1306_InverseScreen (uint8_t address)
   // send command
   // -------------------------    
   status = SSD1306_Send_Command (SSD1306_DIS_INVERSE);
-  // request - start TWI
+  // request succesfull
   if (SSD1306_SUCCESS != status) {
     // error
     return status;
@@ -387,7 +385,7 @@ uint8_t SSD1306_UpdateScreen (uint8_t address)
   // TWI: start & SLAW
   // -------------------------
   status = SSD1306_Send_StartAndSLAW (address);
-  // request - start TWI
+  // request succesfull
   if (SSD1306_SUCCESS != status) {
     // error
     return status;
@@ -396,18 +394,18 @@ uint8_t SSD1306_UpdateScreen (uint8_t address)
   // control byte data stream
   // -------------------------    
   status = TWI_MT_Send_Data (SSD1306_DATA_STREAM);
-  // request - start TWI
+  // request succesfull
   if (SSD1306_SUCCESS != status) {
     // error
     return status;
   }
 
-  // erase whole area
+  //  send cache memory lcd
   // -------------------------
   while (i < CACHE_SIZE_MEM) {
-    // send null data
+    // send data
     status = TWI_MT_Send_Data (cacheMemLcd[i]);
-    // request - start TWI
+    // request succesfull
     if (SSD1306_SUCCESS != status) {
       // error
       return status;
@@ -424,7 +422,7 @@ uint8_t SSD1306_UpdateScreen (uint8_t address)
 }
 
 /**
- * @desc    SSD1306 Send Command
+ * @desc    SSD1306 Clear screen
  *
  * @param   void
  *
@@ -446,12 +444,12 @@ void SSD1306_ClearScreen (void)
  */
 void SSD1306_SetPosition (uint8_t x, uint8_t y) 
 {
-  // counter
+  // calculate counter
   _counter = x + (y << 7);
 }
 
 /**
- * @desc    SSD1306 Check Text Poisition
+ * @desc    SSD1306 Update text poisition - this ensure that character will not be divided at the end of row, the whole character will be depicted on the new row
  *
  * @param   void
  *
@@ -459,29 +457,32 @@ void SSD1306_SetPosition (uint8_t x, uint8_t y)
  */
 uint8_t SSD1306_UpdTxtPosition (void) 
 {
-  // check end column position
+  // y / 8
   uint8_t y = _counter >> 7;
+  // y % 8
   uint8_t x = _counter - (y << 7);
+  // x + character length + 1
   uint8_t x_new = x + CHARS_COLS_LENGTH + 1;
 
   // check position
   if (x_new > END_COLUMN_ADDR) {
-    // if more than numbre of pages
+    // if more than allowable number of pages
     if (y > END_PAGE_ADDR) {
       // return out of range
       return SSD1306_ERROR;
-    // if x out reach end but page in range
+    // if x reach the end but page in range
     } else if (y < (END_PAGE_ADDR-1)) {
       // update
       _counter = ((++y) << 7);
     }
   }
+ 
   // success
   return SSD1306_SUCCESS;
 }
 
 /**
- * @desc    Draw character
+ * @desc    SSD1306 Draw character
  *
  * @param   char character
  *
@@ -493,6 +494,7 @@ uint8_t SSD1306_DrawChar (char character)
   uint8_t i = 0;
 
   // update text position
+  // this ensure that character will not be divided at the end of row, the whole character will be depicted on the new row
   if (SSD1306_UpdTxtPosition () == SSD1306_ERROR) {
     // error
     return SSD1306_ERROR;
