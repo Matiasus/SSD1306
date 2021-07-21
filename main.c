@@ -23,11 +23,11 @@
 #include "lib/ssd1306.h"
 
 /**
- * @desc    Main
+ * @desc    Main function
  *
  * @param   void
  *
- * @return  unsigned char
+ * @return  int
  */
 int main(void)
 {
