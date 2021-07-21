@@ -4,11 +4,14 @@
 Detailed information are described in [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf).
 
 ## Library
-C library is aimed for driving [SSD1306 0.96" OLED display](#demonstration) 128x64 through TWI's Atmega328p.
+C library is aimed for driving [0.96" OLED display with SSD1306 driver](#demonstration) 128x64 through TWI's Atmega328p.
 
 ### Versions
-- 1.0 - basic functions.
-- 2.0 - change whole logic -> rebuild to cacheMemLcd array. It means that every request is stored in cache array and then is depicted on the display by function [SSD1306_UpdateScreen (uint8_t)](#ssd1306_updatescreen). Added new function -> [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline).
+- 1.0 - basic functions. The first publication.
+- 2.0 - more changes: 
+  - rebuild to cacheMemLcd array. It means that every request is stored in cache array and then is depicted on the display by function [SSD1306_UpdateScreen (uint8_t)](#ssd1306_updatescreen). 
+  - Added new function -> [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline). Possible depicted any line (horizontal, vertical, with slope).
+  - Possible to use for more than 1 display (not tested, cause displays that I have avialable had the same addresses).
 
 ## Dependencies
 - [font.c](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/font.c)
@@ -27,7 +30,7 @@ Prior defined for MCU Atmega328p / Atmega8 / Atmega16. Need to be carefull with 
 | SDA | PC1 | PC4 |
 
 ### Tested
-Library was tested and proved on a **_SSD1306 0.96″ OLED Dispay_** with **_Atmega328p_**.
+Library was tested and proved on **_0.96″ OLED Display with SSD1306 driver_** and **_Atmega328p_**.
 
 ## Init OLED Sequence
 Init sequence OLED display was defined according to page 64 (next to last page) of [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf).
@@ -124,3 +127,4 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 
 ## Links
 - [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf)
+- [Atmega328](https://ww1.microchip.com/downloads/en/DeviceDoc/ATmega48A-PA-88A-PA-168A-PA-328-P-DS-DS40002061B.pdf)
