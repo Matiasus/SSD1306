@@ -23,14 +23,11 @@
 #ifndef __SSD1306_H__
 #define __SSD1306_H__
 
-<<<<<<< HEAD
   // include libraries
-  #include <string.h>
+  #include <string.h>                     // memset
   #include "font.h"
   #include "twi.h"
 
-=======
->>>>>>> origin/develop
   // Success
   // -------------------------------------------
   #define SSD1306_SUCCESS           0

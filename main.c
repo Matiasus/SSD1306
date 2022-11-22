@@ -23,6 +23,7 @@
 // include libraries
 #include "lib/ssd1306.h"
 #include <util/delay.h>
+#include <stdio.h>
 
 /**
  * @desc    Main function
@@ -41,7 +42,7 @@ int main(void)
   SSD1306_Init (addr);
 
   // clear screen
-  SSD1306_ClearScreen (addr);
+  SSD1306_ClearScreen ();
   // draw line
   SSD1306_DrawLine (0, MAX_X, 4, 4);
   // set position

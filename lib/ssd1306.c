@@ -271,7 +271,7 @@ uint8_t SSD1306_NormalScreen (uint8_t address)
  */
 uint8_t SSD1306_InverseScreen (uint8_t address)
 {
-  uint8_t status = INIT_STATUS;
+  uint8_t status = INIT_STATUS;                                   // TWI init status 0xFF
 
   // TWI start & SLAW
   // -------------------------------------------------------------------------------------
