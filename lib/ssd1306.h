@@ -111,7 +111,6 @@
    * @desc    SSD1306 Send Start and SLAW request
    *
    * @param   uint8_t
-<<<<<<< HEAD
    *
    * @return  uint8_t
    */
@@ -131,27 +130,6 @@
    *
    * @param   void
    *
-=======
-   *
-   * @return  uint8_t
-   */
-  uint8_t SSD1306_Send_StartAndSLAW (uint8_t);
-
-  /**
-   * @desc    SSD1306 Send command
-   *
-   * @param   uint8_t
-   *
-   * @return  uint8_t
-   */
-  uint8_t SSD1306_Send_Command (uint8_t);
-
-  /**
-   * @desc    SSD1306 Clear screen
-   *
-   * @param   void
-   *
->>>>>>> origin/develop
    * @return  void
    */
   void SSD1306_ClearScreen (void);
