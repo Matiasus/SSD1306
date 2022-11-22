@@ -19,10 +19,10 @@ TARGET      	= main
 LIBDIR        = lib
 #
 # Type of microcontroller
-DEVICE        = atmega16
+DEVICE        = atmega328p
 #
 # Frequency
-FCPU          = 16000000
+FCPU          = 8000000
 #
 # Optimization
 OPTIMIZE      = Os
@@ -66,7 +66,7 @@ OBJECTS	      = $(SOURCES:.c=.o)
 AVRDUDE       = avrdude
 #
 # AVRDUDE DEVICE
-AVRDUDE_MMCU  = m16
+AVRDUDE_MMCU  = m328p
 #
 # AVRDUDE PORT
 AVRDUDE_PORT  = /dev/ttyUSB0

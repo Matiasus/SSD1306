@@ -7,18 +7,34 @@
  *
  * @author      Marian Hrinko
  * @datum       06.10.2020
+ * @update      19.07.2021
  * @file        ssd1306.h
- * @tested      AVR Atmega16
+ * @version     2.0
+ * @tested      AVR Atmega328
  *
- * @depend      twi library
+ * @depend      font.h, twi.h
  * ---------------------------------------------------------------+
+ * @descr       Version 1.0 -> applicable for 1 display
+ *              Version 2.0 -> rebuild to 'cacheMemLcd' array
+ * ---------------------------------------------------------------+
+ * @usage       Basic Setup for OLED Display
  */
 
 #ifndef __SSD1306_H__
 #define __SSD1306_H__
 
-  #define SSD1306_SUCCESS              0
-  #define SSD1306_ERROR                1
+  // include libraries
+  #include <string.h>
+  #include "font.h"
+  #include "twi.h"
+
+  // Success
+  // -------------------------------------------
+  #define SSD1306_SUCCESS           0
+
+  // Error
+  // -------------------------------------------
+  #define SSD1306_ERROR             1
 
   // Address definition
   // -----------------------------------
@@ -56,12 +72,6 @@
   #define SSD1306_SET_PRECHARGE     0xD9
   #define SSD1306_VCOM_DESELECT     0xDB
 
-
-  // Characters definition
-  // -----------------------------------
-  // number of columns for chars
-// #define CHARS_COLS_LENGTH            5
-
   // Clear Color
   // -----------------------------------
   #define CLEAR_COLOR               0x00
@@ -72,159 +82,139 @@
 
   // AREA definition
   // -----------------------------------
-  #define START_PAGE_ADDR              0
-  #define END_PAGE_ADDR                7
-  #define START_COLUMN_ADDR            0
-  #define END_COLUMN_ADDR            127
+  #define START_PAGE_ADDR           0
+  #define END_PAGE_ADDR             7
+  #define START_COLUMN_ADDR         0
+  #define END_COLUMN_ADDR           127
 
-  #define MAX_X          END_COLUMN_ADDR
-  #define MAX_Y      (END_PAGE_ADDR+1)*8
+  #define CACHE_SIZE_MEM            (1 + END_PAGE_ADDR) * (1 + END_COLUMN_ADDR)
+
+  #define MAX_X                     END_COLUMN_ADDR
+  #define MAX_Y                     (END_PAGE_ADDR+1)*8
 
   // @var set area
-  unsigned int set_area;
-
-  // cache index column
-  unsigned short int indexCol;
-  // cache index page
-  unsigned short int indexPage;
+  unsigned int _counter;
 
   /**
    * @desc    SSD1306 Init
    *
-   * @param   void
+   * @param   uint8_t
    *
-   * @return  char
+   * @return  uint8_t
    */
-  char SSD1306_Init(void);
+  uint8_t SSD1306_Init (uint8_t);
 
   /**
    * @desc    SSD1306 Send Start and SLAW request
    *
-   * @param   void
+   * @param   uint8_t
    *
-   * @return  char
+   * @return  uint8_t
    */
-  char SSD1306_Send_StartAndSLAW(void);
+  uint8_t SSD1306_Send_StartAndSLAW (uint8_t);
 
   /**
-   * @desc    SSD1306 Send Command
+   * @desc    SSD1306 Send command
+   *
+   * @param   uint8_t
+   *
+   * @return  uint8_t
+   */
+  uint8_t SSD1306_Send_Command (uint8_t);
+
+  /**
+   * @desc    SSD1306 Clear screen
+   *
+   * @param   void
+   *
+   * @return  void
+   */
+  void SSD1306_ClearScreen (void);
+
+  /**
+   * @desc    SSD1306 Normal colors
+   *
+   * @param   uint8_t
+   *
+   * @return  uint8_t
+   */
+  uint8_t SSD1306_NormalScreen (uint8_t);
+
+  /**
+   * @desc    SSD1306 Inverse colors
+   *
+   * @param   uint8_t
+   *
+   * @return  uint8_t
+   */
+  uint8_t SSD1306_InverseScreen (uint8_t);
+
+  /**
+   * @desc    SSD1306 Update screen
+   *
+   * @param   uint8_t
+   *
+   * @return  uint8_t
+   */
+  uint8_t SSD1306_UpdateScreen (uint8_t);
+
+  /**
+   * @desc    SSD1306 Update text position
+   *
+   * @param   void
+   *
+   * @return  uint8_t
+   */
+  uint8_t SSD1306_UpdTxtPosition (void);
+
+  /**
+   * @desc    SSD1306 Set position
+   *
+   * @param   uint8_t
+   * @param   uint8_t
+   *
+   * @return  void
+   */
+  void SSD1306_SetPosition (uint8_t, uint8_t);
+
+  /**
+   * @desc    SSD1306 Draw character
    *
    * @param   char
    *
-   * @return  char
+   * @return  uint8_t
    */
-  char SSD1306_Send_Command(char);
+  uint8_t SSD1306_DrawChar (char);
 
   /**
-   * @desc    SSD1306 Clear Screen
-   *
-   * @param   void
-   *
-   * @return  char
-   */
-  char SSD1306_ClearScreen(void);
-
-  /**
-   * @desc    SSD1306 Normal Colors
-   *
-   * @param   void
-   *
-   * @return  char
-   */
-  char SSD1306_NormalScreen(void);
-
-  /**
-   * @desc    SSD1306 Inverse Colors
-   *
-   * @param   void
-   *
-   * @return  char
-   */
-  char SSD1306_InverseScreen(void);
-
-  /**
-   * @desc    SSD1306 Check Text Poisition
-   *
-   * @param   void
-   *
-   * @return  char
-   */
-  char SSD1306_UpdTxtPosition(void);
-
-  /**
-   * @desc    SSD1306 Set Position
-   *
-   * @param   char -> column
-   * @param   char -> page
-   *
-   * @return  char
-   */
-  char SSD1306_SetPosition(char, char);
-
-  /**
-   * @desc    SSD1306 Draw Character
-   *
-   * @param   char
-   *
-   * @return  char
-   */
-  char SSD1306_DrawChar(char);
-
-  /**
-   * @desc    SSD1306 Draw String
+   * @desc    SSD1306 Draw string
    *
    * @param   char *
    *
-   * @return  char
-   */
-  char SSD1306_DrawString(char *);
-
-  /**
-   * @desc    SSD1306 Update Screen On
-   *
-   * @param   void
-   *
-   * @return  char
-   */
-  char SSD1306_UpdateScreen(void);
-
-  /**
-   * @desc    Update index
-   *
-   * @param   char
-   *
    * @return  void
    */
-  void SSD1306_UpdateIndexes(char);
+  void SSD1306_DrawString (char *);
 
   /**
-   * @desc    Draw line horizontal
+   * @desc    Draw pixel
    *
-   * @param   char
-   * @param   char
-   * @param   char
+   * @param   uint8_t
+   * @param   uint8_t
    *
-   * @return  void
+   * @return  uint8_t
    */
-  char SSD1306_DrawLineHorizontal(char, char, char);
+  uint8_t SSD1306_DrawPixel (uint8_t, uint8_t);
 
   /**
-   * @desc    Send 1 Byte of data
+   * @desc    Draw line
+   *  
+   * @param   uint8_t
+   * @param   uint8_t
+   * @param   uint8_t
+   * @param   uint8_t
    *
-   * @param   char
-   *
-   * @return  void
+   * @return  uint8_t
    */
-  char SSD1306_SendByte(char);
-
-  /**
-   * @desc    Send Same Bytes
-   *
-   * @param   char
-   * @param   char
-   *
-   * @return  void
-   */
-  char SSD1306_SendBytes(char, char);
+  uint8_t SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t);
 
 #endif

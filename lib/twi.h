@@ -18,15 +18,8 @@
 #ifndef __TWI_H__
 #define __TWI_H__
 
-  // define clock
-  #if defined(__AVR_ATmega8__)
-    #define _FCPU 8000000
-  #elif defined(__AVR_ATmega16__)
-    #define _FCPU 16000000
-  #endif
-
   // define register for TWI communication
-  #if defined(__AVR_ATmega16__)
+  #if defined(__AVR_ATmega16__) || defined(__AVR_ATmega8__) || defined(__AVR_ATmega328P__)
     #define TWI_TWAR TWAR // TWI (Slave) Address Register
     #define TWI_TWBR TWBR // TWI Bit Rate Register
     #define TWI_TWDR TWDR // TWI Data Register
