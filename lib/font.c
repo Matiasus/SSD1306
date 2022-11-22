@@ -8,7 +8,7 @@
  * @author      Marian Hrinko
  * @datum       07.10.2020
  * @file        font.c
- * @tested      AVR Atmega16
+ * @tested      AVR Atmega16, Atmega8, Atmega328
  *
  * @depend      
  * ---------------------------------------------------------------+
@@ -16,7 +16,7 @@
 #include "font.h"
 
 /** @array Charset */
-const uint8_t FONTS[][5] PROGMEM = {
+const uint8_t FONTS[][CHARS_COLS_LENGTH] PROGMEM = {
   { 0x00, 0x00, 0x00, 0x00, 0x00 }, // 20 space
   { 0x81, 0x81, 0x18, 0x81, 0x81 }, // 21 !
   { 0x00, 0x07, 0x00, 0x07, 0x00 }, // 22 "

@@ -23,11 +23,14 @@
 #ifndef __SSD1306_H__
 #define __SSD1306_H__
 
+<<<<<<< HEAD
   // include libraries
   #include <string.h>
   #include "font.h"
   #include "twi.h"
 
+=======
+>>>>>>> origin/develop
   // Success
   // -------------------------------------------
   #define SSD1306_SUCCESS           0
@@ -108,6 +111,7 @@
    * @desc    SSD1306 Send Start and SLAW request
    *
    * @param   uint8_t
+<<<<<<< HEAD
    *
    * @return  uint8_t
    */
@@ -127,6 +131,27 @@
    *
    * @param   void
    *
+=======
+   *
+   * @return  uint8_t
+   */
+  uint8_t SSD1306_Send_StartAndSLAW (uint8_t);
+
+  /**
+   * @desc    SSD1306 Send command
+   *
+   * @param   uint8_t
+   *
+   * @return  uint8_t
+   */
+  uint8_t SSD1306_Send_Command (uint8_t);
+
+  /**
+   * @desc    SSD1306 Clear screen
+   *
+   * @param   void
+   *
+>>>>>>> origin/develop
    * @return  void
    */
   void SSD1306_ClearScreen (void);

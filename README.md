@@ -4,7 +4,14 @@
 Detailed information are described in [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf).
 
 ## Library
-C library is aimed for driving [SSD1306 0.96" OLED display](#demonstration) 128x64 through TWI's Atmega16.
+C library is aimed for driving [0.96" OLED display with SSD1306 driver](#demonstration) 128x64 through TWI's Atmega328p.
+
+### Versions
+- 1.0 - basic functions. The first publication.
+- 2.0 - more changes: 
+  - rebuild to cacheMemLcd array. It means that every request is stored in cache array and then is depicted on the display by function [SSD1306_UpdateScreen (uint8_t)](#ssd1306_updatescreen). 
+  - Added new function -> [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline). Possible depicted any line (horizontal, vertical, with slope).
+  - Possible to use for more than 1 display (not tested, cause displays that I have avialable had the same addresses).
 
 ## Dependencies
 - [font.c](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/font.c)
@@ -15,15 +22,15 @@ C library is aimed for driving [SSD1306 0.96" OLED display](#demonstration) 128x
 Font.c can be modified according to application requirements with form defined in font.c. Maximal permissible horizontal dimension is 8 bits.
 
 ### Usage
-Prior defined for MCU Atmega16 / Atmega8. Need to be carefull with TWI ports definition.
+Prior defined for MCU Atmega328p / Atmega8 / Atmega16. Need to be carefull with TWI ports definition.
 
-| PORT  | [Atmega16](http://ww1.microchip.com/downloads/en/devicedoc/doc2466.pdf) | [Atmega8](https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-2486-8-bit-AVR-microcontroller-ATmega8_L_datasheet.pdf) |
+| PORT  | [Atmega16](http://ww1.microchip.com/downloads/en/devicedoc/doc2466.pdf) | [Atmega8](https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-2486-8-bit-AVR-microcontroller-ATmega8_L_datasheet.pdf) / [Atmega328](https://ww1.microchip.com/downloads/en/DeviceDoc/ATmega48A-PA-88A-PA-168A-PA-328-P-DS-DS40002061B.pdf) |
 | :---: | :---: | :---: |
 | SCL | PC0 | PC5 |
 | SDA | PC1 | PC4 |
 
 ### Tested
-Library was tested and proved on a **_SSD1306 0.96″ OLED Dispay_** with **_Atmega16_**.
+Library was tested and proved on **_0.96″ OLED Display with SSD1306 driver_** and **_Atmega328p_**.
 
 ## Init OLED Sequence
 Init sequence OLED display was defined according to page 64 (next to last page) of [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf).
@@ -105,17 +112,19 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 // +---------------------------+
 ```
 ## Functions
-- [SSD1306_Init (void)](#ssd1306_init) - Init display
-- [SSD1306_ClearScreen (char)](#ssd1306_clearscreen) - Clear screen
-- [SSD1306_InverseScreen (void)](#ssd1306_inversescreen) - Inverse screen
-- [SSD1306_SetPosition (char, char)](#ssd1306_setposition) - Set position
+- [SSD1306_Init (uint8_t)](#ssd1306_init) - Init display
+- [SSD1306_ClearScreen (void)](#ssd1306_clearscreen) - Clear screen
+- [SSD1306_NormalScreen (uint8_t)](#ssd1306_normalscreen) - Normal screen
+- [SSD1306_InverseScreen (uint8_t)](#ssd1306_inversescreen) - Inverse screen
+- [SSD1306_SetPosition (uint8_t, uint8_t)](#ssd1306_setposition) - Set position
 - [SSD1306_DrawChar (char)](#ssd1306_drawchar) - Draw specific character
 - [SSD1306_DrawString (char*)](#ssd1306_drawstring) - Draw specific string
-- [SSD1306_UpdateScreen (void)](#ssd1306_updatescreen) - Display on
-- [SSD1306_DrawLineHorizontal (char, char, char)](#ssd1306_drawlinehorizontal) - Draw horizontal line
+- [SSD1306_UpdateScreen (uint8_t)](#ssd1306_updatescreen) - Update content on display
+- [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline) - Draw line
 
 ## Demonstration
-<img src="img/demonstration_ssd1306.jpg" />
+<img src="img/ssd1306_v20.png" />
 
 ## Links
 - [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf)
+- [Atmega328](https://ww1.microchip.com/downloads/en/DeviceDoc/ATmega48A-PA-88A-PA-168A-PA-328-P-DS-DS40002061B.pdf)
