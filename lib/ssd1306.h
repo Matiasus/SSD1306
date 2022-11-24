@@ -23,6 +23,11 @@
 #ifndef __SSD1306_H__
 #define __SSD1306_H__
 
+  // includes
+  #include <string.h>
+  #include "font.h"
+  #include "twi.h"
+
   // Success
   // -------------------------------------------
   #define SSD1306_SUCCESS           0
@@ -33,7 +38,7 @@
 
   // Address definition
   // -----------------------------------
-  #define SSD1306_ADDRESS           0x3C
+  #define SSD1306_ADDR              0x3C
 
   // Command definition
   // -----------------------------------
@@ -93,11 +98,11 @@
   /**
    * @desc    SSD1306 Init
    *
-   * @param   uint8_t
+   * @param   void
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_Init (uint8_t);
+  uint8_t SSD1306_Init (void);
 
   /**
    * @desc    SSD1306 Send Start and SLAW request
@@ -122,36 +127,27 @@
    *
    * @param   void
    *
-   * @return  void
+   * @return  uint8_t
    */
-  void SSD1306_ClearScreen (void);
+  uint8_t SSD1306_ClearScreen (void);
 
   /**
    * @desc    SSD1306 Normal colors
    *
-   * @param   uint8_t
+   * @param   void
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_NormalScreen (uint8_t);
+  uint8_t SSD1306_NormalScreen (void);
 
   /**
    * @desc    SSD1306 Inverse colors
    *
-   * @param   uint8_t
+   * @param   void
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_InverseScreen (uint8_t);
-
-  /**
-   * @desc    SSD1306 Update screen
-   *
-   * @param   uint8_t
-   *
-   * @return  uint8_t
-   */
-  uint8_t SSD1306_UpdateScreen (uint8_t);
+  uint8_t SSD1306_InverseScreen (void);
 
   /**
    * @desc    SSD1306 Update text position
@@ -160,7 +156,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_UpdTxtPosition (void);
+  uint8_t SSD1306_UpdatePosition (void);
 
   /**
    * @desc    SSD1306 Set position
@@ -168,9 +164,9 @@
    * @param   uint8_t
    * @param   uint8_t
    *
-   * @return  void
+   * @return  uint8_t
    */
-  void SSD1306_SetPosition (uint8_t, uint8_t);
+  uint8_t SSD1306_SetPosition (uint8_t, uint8_t);
 
   /**
    * @desc    SSD1306 Draw character
@@ -186,9 +182,9 @@
    *
    * @param   char *
    *
-   * @return  void
+   * @return  uint8_t
    */
-  void SSD1306_DrawString (char *);
+  uint8_t SSD1306_DrawString (char *);
 
   /**
    * @desc    Draw pixel
