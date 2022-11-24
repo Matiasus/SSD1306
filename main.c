@@ -34,47 +34,22 @@
  */
 int main(void)
 {
-  char str[2];
-  uint8_t i;
-  uint8_t addr = SSD1306_ADDRESS;
-
+/*
+  uint8_t x = 0;
+  uint8_t y = 0;
+*/
   // init ssd1306
-  SSD1306_Init (addr);
-
+  SSD1306_Init ();
   // clear screen
   SSD1306_ClearScreen ();
-  // draw line
-  SSD1306_DrawLine (0, MAX_X, 4, 4);
-  // set position
-  SSD1306_SetPosition (7, 1);
   // draw string
-  SSD1306_DrawString ("SSD1306 OLED DRIVER");
-  // draw line
-  SSD1306_DrawLine (0, MAX_X, 18, 18);
-  // set position
-  SSD1306_SetPosition (40, 3);
+  SSD1306_DrawString ("SSD1306 MATIASUS");
 /*
-  // draw string
-  SSD1306_DrawString ("MATIASUS");
-  // draw string
-  SSD1306_DrawString ("2021");
-*/
-  // update
-  SSD1306_UpdateScreen (addr);
+  while (x < 10) {
 
-  for (i=0; i<10; i++) {
-    // into string
-    sprintf(str, "%d", i);
-    // set position
-    SSD1306_SetPosition (60, 3);
-    // draw string
-    SSD1306_DrawString (str);
-    // update
-    SSD1306_UpdateScreen (addr);
-    // delay
-    _delay_ms(100);
+    SSD1306_DrawPixel (x++,y++);
   }
-
+*/
   // return value
   return 0;
 }
