@@ -577,6 +577,25 @@ uint8_t SSD1306_DrawLine (uint8_t x1, uint8_t x2, uint8_t y1, uint8_t y2)
   delta_x = x2 - x1;                                              // delta x
   delta_y = y2 - y1;                                              // delta y
 
+  // Vertical line
+  // -------------------------------------------------------------------------------------
+  if (delta_x == 0) {
+    status = SSD1306_DrawLineVert (x1, y1, y2);                   // draw vertical line
+    if (SSD1306_SUCCESS != status) {                              // check status
+      return status;                                              // error
+    }
+    return SSD1306_SUCCESS;                                       // success return    
+  }
+  //  Horizontal line
+  // -------------------------------------------------------------------------------------
+  if (delta_y == 0) {
+    status = SSD1306_DrawLineHorz (y1, x1, x2);                   // draw horizontal line
+    if (SSD1306_SUCCESS != status) {                              // check status
+      return status;                                              // error
+    }
+    return SSD1306_SUCCESS;                                       // success return    
+  } 
+
   if (delta_x < 0) {                                              // check if x2 > x1
     delta_x = -delta_x;                                           // negate delta x
     trace_x = -trace_x;                                           // negate step x
