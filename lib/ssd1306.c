@@ -102,25 +102,26 @@
 const uint8_t INIT_SSD1306[] PROGMEM = {
   18,                                                             // number of initializers
   0, SSD1306_DISPLAY_OFF,                                         // 0xAE = Set Display OFF
-  1, SSD1306_SET_MUX_RATIO, 0x3F,                                 // 0xA8
+  1, SSD1306_SET_MUX_RATIO, 0x3F,                                 // 0xA8 - 64MUX
   1, SSD1306_MEMORY_ADDR_MODE, 0x00,                              // 0x20 = Set Memory Addressing Mode
                                                                   // 0x00 - Horizontal Addressing Mode
                                                                   // 0x01 - Vertical Addressing Mode
                                                                   // 0x02 - Page Addressing Mode (RESET)
-  2, SSD1306_SET_COLUMN_ADDR, START_COLUMN_ADDR, END_COLUMN_ADDR, // 0x21 = Set Column Address
-  2, SSD1306_SET_PAGE_ADDR, START_PAGE_ADDR, END_PAGE_ADDR,       // 0x22 = Set Page Address
+  2, SSD1306_SET_COLUMN_ADDR, START_COLUMN_ADDR, END_COLUMN_ADDR, // 0x21 = Set Column Address, 0 - 127
+  2, SSD1306_SET_PAGE_ADDR, START_PAGE_ADDR, END_PAGE_ADDR,       // 0x22 = Set Page Address, 0 - 7
   0, SSD1306_SET_START_LINE,                                      // 0x40
   1, SSD1306_DISPLAY_OFFSET, 0x00,                                // 0xD3
   0, SSD1306_SEG_REMAP_OP,                                        // 0xA0 / remap 0xA1
   0, SSD1306_COM_SCAN_DIR_OP,                                     // 0xC0 / remap 0xC8
-  1, SSD1306_COM_PIN_CONF, 0x12,                                  // 0xDA
-  1, SSD1306_SET_CONTRAST, 0x7F,                                  // 0x81
+  1, SSD1306_COM_PIN_CONF, 0x12,                                  // 0xDA, 0x12 - Disable COM Left/Right remap, Alternative COM pin configuration
+  1, SSD1306_SET_CONTRAST, 0x7F,                                  // 0x81, 0x7F - reset value (max 0xFF)
   0, SSD1306_DIS_ENT_DISP_ON,                                     // 0xA4
   0, SSD1306_DIS_NORMAL,                                          // 0xA6
-  1, SSD1306_SET_OSC_FREQ, 0x80,                                  // 0xD5
-  1, SSD1306_SET_PRECHARGE, 0xc2,                                 // 0xD9, 1st Period = higher value less blinking
+  1, SSD1306_SET_OSC_FREQ, 0x80,                                  // 0xD5, 0x80 => D=1; DCLK = Fosc / D <=> DCLK = Fosc
+  1, SSD1306_SET_PRECHARGE, 0xc2,                                 // 0xD9, higher value less blinking
+                                                                  // 0xC2, 1st phase = 2 DCLK,  2nd phase = 13 DCLK
   1, SSD1306_VCOM_DESELECT, 0x20,                                 // Set V COMH Deselect, reset value 0x22 = 0,77xUcc
-  1, SSD1306_SET_CHAR_REG, 0x14,                                  // 0x8D
+  1, SSD1306_SET_CHAR_REG, 0x14,                                  // 0x8D, Enable charge pump during display on
   0, SSD1306_DISPLAY_ON                                           // 0xAF = Set Display ON
 };
 
@@ -555,4 +556,65 @@ uint8_t SSD1306_DrawPixel (uint8_t x, uint8_t y)
   TWI_Stop ();
 
   return SSD1306_SUCCESS;                                         // success
+}
+
+/**
+ * @desc    Draw line by Bresenham algoritm
+ *
+ * @param   uint8_t x start position / 0 <= cols <= MAX_X-1
+ * @param   uint8_t x end position   / 0 <= cols <= MAX_X-1
+ * @param   uint8_t y start position / 0 <= rows <= MAX_Y-1
+ * @param   uint8_t y end position   / 0 <= rows <= MAX_Y-1
+ *
+ * @return  uint8_t
+ */
+uint8_t SSD1306_DrawLine (uint8_t x1, uint8_t x2, uint8_t y1, uint8_t y2)
+{
+  int16_t D;                                                      // determinant
+  int16_t delta_x, delta_y;                                       // deltas
+  int16_t trace_x = 1, trace_y = 1;                               // steps
+
+  delta_x = x2 - x1;                                              // delta x
+  delta_y = y2 - y1;                                              // delta y
+
+  if (delta_x < 0) {                                              // check if x2 > x1
+    delta_x = -delta_x;                                           // negate delta x
+    trace_x = -trace_x;                                           // negate step x
+  }
+
+  if (delta_y < 0) {                                              // check if y2 > y1
+    delta_y = -delta_y;                                           // negate delta y
+    trace_y = -trace_y;                                           // negate step y
+  }
+  // condition for m < 1 (dy < dx)
+  // -------------------------------------------------------------------------------------
+  if (delta_y < delta_x) {                                        //
+    D = (delta_y << 1) - delta_x;                                 // calculate determinant
+    SSD1306_DrawPixel (x1, y1);                                   // draw first pixel
+    while (x1 != x2) {                                            // check if x1 equal x2
+      x1 += trace_x;                                              // update x1
+      if (D >= 0) {                                               // positive?
+        y1 += trace_y;                                            // update y1
+        D -= 2*delta_x;                                           // update determinant
+      }
+      D += 2*delta_y;                                             // update deteminant
+      SSD1306_DrawPixel (x1, y1);                                 // draw next pixel
+    }
+  // condition for m >= 1 (dy >= dx)
+  // -------------------------------------------------------------------------------------
+  } else {
+    D = delta_y - (delta_x << 1);                                 // calculate determinant
+    SSD1306_DrawPixel (x1, y1);                                   // draw first pixel
+    while (y1 != y2) {                                            // check if y2 equal y1
+      y1 += trace_y;                                              // update y1
+      if (D <= 0) {                                               // positive?
+        x1 += trace_x;                                            // update y1
+        D += 2*delta_y;                                           // update determinant
+      }
+      D -= 2*delta_x;                                             // update deteminant
+      SSD1306_DrawPixel (x1, y1);                                 // draw next pixel
+    }
+  }
+
+  return SSD1306_SUCCESS;                                         // success return
 }
