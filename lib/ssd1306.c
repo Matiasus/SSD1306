@@ -1,7 +1,7 @@
-/** 
- * --------------------------------------------------------------------------------------+  
+/**
+ * --------------------------------------------------------------------------------------+
  * @desc        SSD1306 OLED Driver
- * --------------------------------------------------------------------------------------+ 
+ * --------------------------------------------------------------------------------------+
  *              Copyright (C) 2020 Marian Hrinko.
  *              Written by Marian Hrinko (mato.hrinko@gmail.com)
  *
@@ -13,14 +13,14 @@
  * @tested      AVR Atmega328p
  *
  * @depend      font.h, twi.h
- * --------------------------------------------------------------------------------------+ 
+ * --------------------------------------------------------------------------------------+
  * @descr       Version 1.0 -> applicable for 1 display
  *              Version 2.0 -> rebuild to 'cacheMemLcd' array
  *              Version 3.0 -> remove 'cacheMemLcd' approach
- * --------------------------------------------------------------------------------------+ 
+ * --------------------------------------------------------------------------------------+
  * @usage       Basic Setup for OLED Display
  */
- 
+
 #include "ssd1306.h"
 
 // +---------------------------+
@@ -107,7 +107,7 @@ const uint8_t INIT_SSD1306[] PROGMEM = {
                                                                   // 0x00 - Horizontal Addressing Mode
                                                                   // 0x01 - Vertical Addressing Mode
                                                                   // 0x02 - Page Addressing Mode (RESET)
-  2, SSD1306_SET_COLUMN_ADDR, START_COLUMN_ADDR, END_COLUMN_ADDR, // 0x21 = Set Column Address, 0 - 127
+  2, SSD1306_SET_COLUMN_ADDR, START_COL_ADDR, END_COL_ADDR,       // 0x21 = Set Column Address, 0 - 127
   2, SSD1306_SET_PAGE_ADDR, START_PAGE_ADDR, END_PAGE_ADDR,       // 0x22 = Set Page Address, 0 - 7
   0, SSD1306_SET_START_LINE,                                      // 0x40
   1, SSD1306_DISPLAY_OFFSET, 0x00,                                // 0xD3
@@ -125,7 +125,7 @@ const uint8_t INIT_SSD1306[] PROGMEM = {
   0, SSD1306_DISPLAY_ON                                           // 0xAF = Set Display ON
 };
 
-unsigned short int _indexCol = START_COLUMN_ADDR;                 // @var global - cache index column
+unsigned short int _indexCol = START_COL_ADDR;                    // @var global - cache index column
 unsigned short int _indexPage = START_PAGE_ADDR;                  // @var global - cache index page
 
 /**
@@ -136,7 +136,7 @@ unsigned short int _indexPage = START_PAGE_ADDR;                  // @var global
  * @return  uint8_t
  */
 uint8_t SSD1306_Init (void)
-{ 
+{
   const uint8_t *commands = INIT_SSD1306;                         // variables
   unsigned short int no_of_commands = pgm_read_byte(commands++);  // number of commands
   uint8_t no_of_arguments;                                        // number od arguments
@@ -205,7 +205,7 @@ uint8_t SSD1306_Send_StartAndSLAW (uint8_t address)
   if (SSD1306_SUCCESS != status) {                                // check status
     return status;                                                // error
   }
-  
+
   return SSD1306_SUCCESS;                                         // success
 }
 
@@ -221,7 +221,7 @@ uint8_t SSD1306_Send_Command (uint8_t command)
   uint8_t status = INIT_STATUS;                                   // TWI init status 0xFF
 
   // TWI send control byte
-  // -------------------------------------------------------------------------------------  
+  // -------------------------------------------------------------------------------------
   status = TWI_MT_Send_Data (SSD1306_COMMAND);                    // send control byte
   if (SSD1306_SUCCESS != status) {                                // check status
     return status;                                                // error
@@ -338,7 +338,30 @@ uint8_t SSD1306_ClearScreen (void)
  *
  * @return  void
  */
-uint8_t SSD1306_SetPosition (uint8_t x, uint8_t y) 
+uint8_t SSD1306_SetPosition (uint8_t x, uint8_t y)
+{
+  uint8_t status = INIT_STATUS;                                   // TWI init status 0xFF
+
+  // Set Window
+  // -------------------------------------------------------------------------------------
+  status = SSD1306_SetWindow (x, END_COL_ADDR, y, END_PAGE_ADDR);
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  return SSD1306_SUCCESS;                                         // success
+}
+
+/**
+ * @desc    SSD1306 Set window
+ *
+ * @param   uint8_t x1 / column -> 0 ... 127
+ * @param   uint8_t x2 / column -> 0 ... 127
+ * @param   uint8_t y1 / page -> 0 ... 7
+ * @param   uint8_t y2 / page -> 0 ... 7
+ *
+ * @return  void
+ */
+uint8_t SSD1306_SetWindow (uint8_t x1, uint8_t x2, uint8_t y1, uint8_t y2)
 {
   uint8_t status = INIT_STATUS;                                   // TWI init status 0xFF
 
@@ -349,18 +372,18 @@ uint8_t SSD1306_SetPosition (uint8_t x, uint8_t y)
     return status;                                                // error
   }
   // COLUMN
-  // ------------------------------------------------------------------------------------- 
+  // -------------------------------------------------------------------------------------
   status = SSD1306_Send_Command (SSD1306_SET_COLUMN_ADDR);        // 0x21
   if (SSD1306_SUCCESS != status) {                                // check status
     return status;                                                // error
   }
   // start COLUMN
-  status = SSD1306_Send_Command (x);
+  status = SSD1306_Send_Command (x1);
   if (SSD1306_SUCCESS != status) {                                // check status
     return status;                                                // error
   }
   // end COLUMN
-  status = SSD1306_Send_Command (END_COLUMN_ADDR);                // 127
+  status = SSD1306_Send_Command (x2);
   if (SSD1306_SUCCESS != status) {                                // check status
     return status;                                                // error
   }
@@ -374,12 +397,12 @@ uint8_t SSD1306_SetPosition (uint8_t x, uint8_t y)
     return status;                                                // error
   }
   // start PAGE
-  status = SSD1306_Send_Command (y);
+  status = SSD1306_Send_Command (y1);
   if (SSD1306_SUCCESS != status) {                                // check status
     return status;                                                // error
   }
   // end PAGE
-  status = SSD1306_Send_Command (END_PAGE_ADDR);                  // 7 for 128x64
+  status = SSD1306_Send_Command (y2);
   if (SSD1306_SUCCESS != status) {                                // check status
     return status;                                                // error
   }
@@ -401,14 +424,14 @@ uint8_t SSD1306_SetPosition (uint8_t x, uint8_t y)
  *
  * @return  uint8_t
  */
-uint8_t SSD1306_UpdatePosition (void) 
+uint8_t SSD1306_UpdatePosition (void)
 {
   uint8_t status = INIT_STATUS;                                   // TWI init status 0xFF
   uint8_t x = _indexCol + CHARS_COLS_LENGTH + 1;                  // check end col position
 
   // check position
   // -------------------------------------------------------------------------------------
-  if (x > END_COLUMN_ADDR) {
+  if (x > END_COL_ADDR) {
     // last page not reached
     // -----------------------------------------------------------------------------------
     if (_indexPage < END_PAGE_ADDR) {
@@ -422,10 +445,10 @@ uint8_t SSD1306_UpdatePosition (void)
     // last page reached
     // -----------------------------------------------------------------------------------
     if (_indexPage >= END_PAGE_ADDR) {
-      return SSD1306_ERROR;                                       // return out of range     
+      return SSD1306_ERROR;                                       // return out of range
     }
   }
- 
+
   return SSD1306_SUCCESS;                                         // success
 }
 
@@ -474,7 +497,6 @@ uint8_t SSD1306_DrawChar (char ch)
   if (SSD1306_SUCCESS != status) {                                // check status
     return status;                                                // error
   }
-
   _indexCol = _indexCol + CHARS_COLS_LENGTH + 1;                  // update global col
 
   // TWI stop
@@ -496,7 +518,7 @@ uint8_t SSD1306_DrawString (char *str)
   uint8_t i = 0;                                                  // char counter
 
   // send characters of string
-  // ------------------------------------------------------------------------------------- 
+  // -------------------------------------------------------------------------------------
   while (str[i] != '\0') {
     SSD1306_DrawChar (str[i++]);                                  // send char
   }
@@ -514,22 +536,12 @@ uint8_t SSD1306_DrawString (char *str)
  */
 uint8_t SSD1306_DrawPixel (uint8_t x, uint8_t y)
 {
-  uint8_t page = 0;                                               // page
-  uint8_t pixel = 0;                                              // pixel
+  uint8_t page = y >> 3;                                          // page
+  uint8_t pixel = 1 << (y - (page << 3));                         // pixel
   uint8_t status = INIT_STATUS;                                   // TWI init status 0xFF
-  
+
   if ((x > MAX_X) && (y > MAX_Y)) {                               // if out of range
     return SSD1306_ERROR;                                         // error
-  }
-
-  page = y >> 3;                                                  // find page (y / 8)
-  pixel = 1 << (y - (page << 3));                                 // which pixel (y % 8)
-
-  // set position
-  // -------------------------------------------------------------------------------------
-  status = SSD1306_SetPosition (x, page);                         // update position
-  if (SSD1306_SUCCESS != status) {                                // check status
-    return status;                                                // error
   }
 
   // TWI start & SLAW
@@ -538,9 +550,45 @@ uint8_t SSD1306_DrawPixel (uint8_t x, uint8_t y)
   if (SSD1306_SUCCESS != status) {                                // check status
     return status;                                                // error
   }
+  // COLUMN
+  // -------------------------------------------------------------------------------------
+  status = SSD1306_Send_Command (SSD1306_SET_COLUMN_ADDR);        // 0x21
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  // start COLUMN
+  status = SSD1306_Send_Command (x);
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  // end COLUMN
+  status = SSD1306_Send_Command (x);
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  _indexCol = x;                                                  // update column index
+
+  // PAGE
+  // -------------------------------------------------------------------------------------
+  status = SSD1306_Send_Command (SSD1306_SET_PAGE_ADDR);          // 0x22
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  // start PAGE
+  status = SSD1306_Send_Command (page);
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  // end PAGE
+  status = SSD1306_Send_Command (page);
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  _indexPage = y;                                                 // update page index
+
   // TWI control byte data stream
   // -------------------------------------------------------------------------------------
-  status = TWI_MT_Send_Data (SSD1306_DATA_STREAM);                // send data 0x40
+  status = TWI_MT_Send_Data (SSD1306_DATA);                       // send data 0xC0
   if (SSD1306_SUCCESS != status) {                                // check status
     return status;                                                // error
   }
@@ -559,7 +607,95 @@ uint8_t SSD1306_DrawPixel (uint8_t x, uint8_t y)
 }
 
 /**
+ * @desc    Draw line horizontal
+ *
+ * @param   uint8_t x
+ * @param   uint8_t y1
+ * @param   uint8_t y2
+ *
+ * @return  uint8_t
+ */
+uint8_t SSD1306_DrawLineHorz (uint8_t y, uint8_t x1, uint8_t x2)
+{
+  uint8_t i = 0;                                                  // counter
+  uint8_t len = x2 - x1;                                          // length
+  uint8_t page = y >> 3;                                          // page
+  uint8_t pixel = 1 << (y - (page << 3));                         // pixel
+  uint8_t status = INIT_STATUS;                                   // TWI init status 0xFF
+
+  if ((x > MAX_X) && (y > MAX_Y)) {                               // if out of range
+    return SSD1306_ERROR;                                         // error
+  }
+
+  // TWI start & SLAW
+  // -------------------------------------------------------------------------------------
+  status = SSD1306_Send_StartAndSLAW (SSD1306_ADDR);              // start & SLAW
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  // COLUMN
+  // -------------------------------------------------------------------------------------
+  status = SSD1306_Send_Command (SSD1306_SET_COLUMN_ADDR);        // 0x21
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  // start COLUMN
+  status = SSD1306_Send_Command (x1);
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  // end COLUMN
+  status = SSD1306_Send_Command (x2);
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  _indexCol = x;                                                  // update column index
+
+  // PAGE
+  // -------------------------------------------------------------------------------------
+  status = SSD1306_Send_Command (SSD1306_SET_PAGE_ADDR);          // 0x22
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  // start PAGE
+  status = SSD1306_Send_Command (page);
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  // end PAGE
+  status = SSD1306_Send_Command (page);
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  _indexPage = y;                                                 // update column index
+
+  // TWI control byte data stream
+  // -------------------------------------------------------------------------------------
+  status = TWI_MT_Send_Data (SSD1306_DATA_STREAM);                // send data 0x40
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+
+  //  send pixels
+  // -------------------------------------------------------------------------------------
+  while (i < len) {
+    status = TWI_MT_Send_Data (pixel);                              // send pixel
+    if (SSD1306_SUCCESS != status) {                                // check status
+      return status;                                                // error
+    }
+    i++;
+  }
+
+  // TWI stop
+  // -------------------------------------------------------------------------------------
+  TWI_Stop ();
+
+  return SSD1306_SUCCESS;                                         // success return
+}
+
+/**
  * @desc    Draw line by Bresenham algoritm
+ * @note	  Approach with DrawPixel function takes 11 bytes for drawing 1 pixel
  *
  * @param   uint8_t x start position / 0 <= cols <= MAX_X-1
  * @param   uint8_t x end position   / 0 <= cols <= MAX_X-1
@@ -573,34 +709,25 @@ uint8_t SSD1306_DrawLine (uint8_t x1, uint8_t x2, uint8_t y1, uint8_t y2)
   int16_t D;                                                      // determinant
   int16_t delta_x, delta_y;                                       // deltas
   int16_t trace_x = 1, trace_y = 1;                               // steps
+  uint16_t buffer[];                                              // buffer
 
   delta_x = x2 - x1;                                              // delta x
   delta_y = y2 - y1;                                              // delta y
 
-  // Vertical line
-  // -------------------------------------------------------------------------------------
-  if (delta_x == 0) {
-    status = SSD1306_DrawLineVert (x1, y1, y2);                   // draw vertical line
-    if (SSD1306_SUCCESS != status) {                              // check status
-      return status;                                              // error
-    }
-    return SSD1306_SUCCESS;                                       // success return    
-  }
-  //  Horizontal line
+  // draw line with faster draw horizontal line function
   // -------------------------------------------------------------------------------------
   if (delta_y == 0) {
-    status = SSD1306_DrawLineHorz (y1, x1, x2);                   // draw horizontal line
+    status = SSD1306_DrawLineHorz (y1, x1, x2);                   // draw horiyontal line
     if (SSD1306_SUCCESS != status) {                              // check status
       return status;                                              // error
     }
-    return SSD1306_SUCCESS;                                       // success return    
-  } 
+    return SSD1306_SUCCESS;                                       // success return
+  }
 
   if (delta_x < 0) {                                              // check if x2 > x1
     delta_x = -delta_x;                                           // negate delta x
     trace_x = -trace_x;                                           // negate step x
   }
-
   if (delta_y < 0) {                                              // check if y2 > y1
     delta_y = -delta_y;                                           // negate delta y
     trace_y = -trace_y;                                           // negate step y
