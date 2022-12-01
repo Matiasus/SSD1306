@@ -103,18 +103,21 @@
 const uint8_t INIT_SSD1306[] PROGMEM = {
   18,                                                             // number of initializers
   0, SSD1306_DISPLAY_OFF,                                         // 0xAE = Set Display OFF
-  1, SSD1306_SET_MUX_RATIO, 0x3F,                                 // 0xA8 - 64MUX
+  1, SSD1306_SET_MUX_RATIO, 0x3F,                                 // 0xA8 - 0x3F = 64MUX - for 128x64 version
+                                                                  //        0x1F = 32MUX - for 128x32 version
   1, SSD1306_MEMORY_ADDR_MODE, 0x00,                              // 0x20 = Set Memory Addressing Mode
                                                                   // 0x00 - Horizontal Addressing Mode
                                                                   // 0x01 - Vertical Addressing Mode
                                                                   // 0x02 - Page Addressing Mode (RESET)
-  2, SSD1306_SET_COLUMN_ADDR, START_COL_ADDR, END_COL_ADDR,       // 0x21 = Set Column Address, 0 - 127
-  2, SSD1306_SET_PAGE_ADDR, START_PAGE_ADDR, END_PAGE_ADDR,       // 0x22 = Set Page Address, 0 - 7
+  2, SSD1306_SET_COLUMN_ADDR, START_COL_ADDR, END_COL_ADDR,       // 0x21 = Set Column Address, 0 to 127
+  2, SSD1306_SET_PAGE_ADDR, START_PAGE_ADDR, END_PAGE_ADDR,       // 0x22 = Set Page Address, 0 to 7 for 128x64 version or 0 to 3 for 128x32 version
   0, SSD1306_SET_START_LINE,                                      // 0x40
   1, SSD1306_DISPLAY_OFFSET, 0x00,                                // 0xD3
   0, SSD1306_SEG_REMAP_OP,                                        // 0xA0 / remap 0xA1
-  0, SSD1306_COM_SCAN_DIR_OP,                                     // 0xC0 / remap 0xC8
-  1, SSD1306_COM_PIN_CONF, 0x12,                                  // 0xDA, 0x12 - Disable COM Left/Right remap, Alternative COM pin configuration
+  0, SSD1306_COM_SCAN_DIR_OP,                                     // 0xC0 = normal / scan direction COM output
+                                                                  // 0xC8 = remap / scan direction COM output from up to bottom or vice versa
+  1, SSD1306_COM_PIN_CONF, 0x12,                                  // 0xDA, 0x12 - for 128x64 version, Disable COM Left/Right remap, Alternative COM pin conf
+                                                                  //       0x02 - for 128x32 version, Disable COM Left/Right remap, Sequential COM pin conf
   1, SSD1306_SET_CONTRAST, 0x7F,                                  // 0x81, 0x7F - reset value (max 0xFF)
   0, SSD1306_DIS_ENT_DISP_ON,                                     // 0xA4
   0, SSD1306_DIS_NORMAL,                                          // 0xA6
@@ -354,10 +357,10 @@ uint8_t SSD1306_SetPosition (uint8_t x, uint8_t y)
 /**
  * @desc    SSD1306 Set window
  *
- * @param   uint8_t x1 / column -> 0 ... 127
- * @param   uint8_t x2 / column -> 0 ... 127
- * @param   uint8_t y1 / page -> 0 ... 7
- * @param   uint8_t y2 / page -> 0 ... 7
+ * @param   uint8_t x1 / column -> 0 - MAX_X / 127 /
+ * @param   uint8_t x2 / column -> 0 - MAX_X / 127 /
+ * @param   uint8_t y1 / page   -> 0 - MAX_Y / 7 for 128x64, 3 for 128x32 ver /
+ * @param   uint8_t y2 / page   -> 0 - MAX_Y / 7 for 128x64, 3 for 128x32 ver /
  *
  * @return  void
  */
