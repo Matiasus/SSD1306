@@ -21,6 +21,7 @@
  * @usage       Basic Setup for OLED Display
  */
 
+// @includes
 #include "ssd1306.h"
 
 // +---------------------------+
@@ -125,8 +126,8 @@ const uint8_t INIT_SSD1306[] PROGMEM = {
   0, SSD1306_DISPLAY_ON                                           // 0xAF = Set Display ON
 };
 
-unsigned short int _indexCol = START_COL_ADDR;                    // @var global - cache index column
-unsigned short int _indexPage = START_PAGE_ADDR;                  // @var global - cache index page
+uint8_t _indexCol = START_COL_ADDR;                               // @var global - cache index column
+uint8_t _indexPage = START_PAGE_ADDR;                             // @var global - cache index page
 
 /**
  * @desc    SSD1306 Init
@@ -137,8 +138,8 @@ unsigned short int _indexPage = START_PAGE_ADDR;                  // @var global
  */
 uint8_t SSD1306_Init (void)
 {
-  const uint8_t *commands = INIT_SSD1306;                         // variables
-  unsigned short int no_of_commands = pgm_read_byte(commands++);  // number of commands
+  const uint8_t * commands = INIT_SSD1306;                        // variables
+  uint8_t no_of_commands = pgm_read_byte (commands++);            // number of commands
   uint8_t no_of_arguments;                                        // number od arguments
   uint8_t command;                                                // command
   uint8_t status = INIT_STATUS;                                   // TWI init status 0xFF
@@ -172,7 +173,6 @@ uint8_t SSD1306_Init (void)
         return status;                                            // error
       }
     }
-
     no_of_commands--;                                             // next command
   }
   // TWI STOP
@@ -185,7 +185,7 @@ uint8_t SSD1306_Init (void)
 /**
  * @desc    SSD1306 Send Start and SLAW request
  *
- * @param   uint8_t
+ * @param   uint8_t address
  *
  * @return  uint8_t
  */
@@ -264,7 +264,7 @@ uint8_t SSD1306_NormalScreen (void)
 }
 
 /**
- * @desc    SSD1306 Inverse colors
+ * @desc    SSD1306 Inverse screen colors
  *
  * @param   void
  *
@@ -333,8 +333,8 @@ uint8_t SSD1306_ClearScreen (void)
 /**
  * @desc    SSD1306 Set position
  *
- * @param   uint8_t column -> 0 ... 127
- * @param   uint8_t page -> 0 ... 7
+ * @param   uint8_t x / column -> 0 ... 127
+ * @param   uint8_t y / page -> 0 ... 7
  *
  * @return  void
  */
@@ -667,7 +667,7 @@ uint8_t SSD1306_DrawLineHorz (uint8_t y, uint8_t x1, uint8_t x2)
   if (SSD1306_SUCCESS != status) {                                // check status
     return status;                                                // error
   }
-  _indexPage = y;                                                 // update column index
+  _indexPage = y;                                                 // update page index
 
   // TWI control byte data stream
   // -------------------------------------------------------------------------------------
@@ -695,7 +695,7 @@ uint8_t SSD1306_DrawLineHorz (uint8_t y, uint8_t x1, uint8_t x2)
 
 /**
  * @desc    Draw line by Bresenham algoritm
- * @note	  Approach with DrawPixel function takes 11 bytes for drawing 1 pixel
+ * @note	  Approach with DrawPixel function takes 9 bytes for drawing 1 pixel
  *
  * @param   uint8_t x start position / 0 <= cols <= MAX_X-1
  * @param   uint8_t x end position   / 0 <= cols <= MAX_X-1
