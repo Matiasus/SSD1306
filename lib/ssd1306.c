@@ -22,7 +22,6 @@
  */
  
 #include "ssd1306.h"
-  #include <util/delay.h>
 
 // +---------------------------+
 // |      Set MUX Ratio        |
