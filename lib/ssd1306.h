@@ -83,14 +83,17 @@
   // AREA definition
   // -----------------------------------
   #define START_PAGE_ADDR           0
-  #define END_PAGE_ADDR             7
+  #define END_PAGE_ADDR             3     // 3 for 128 x 32 version
+  //#define END_PAGE_ADDR           7     // 7 for 128 x 64 version
   #define START_COLUMN_ADDR         0
   #define END_COLUMN_ADDR           127
+  #define RAM_X_END                 END_COLUMN_ADDR + 1
+  #define RAM_Y_END                 END_PAGE_ADDR + 1
 
   #define CACHE_SIZE_MEM            (1 + END_PAGE_ADDR) * (1 + END_COLUMN_ADDR)
 
   #define MAX_X                     END_COLUMN_ADDR
-  #define MAX_Y                     (END_PAGE_ADDR+1)*8
+  #define MAX_Y                     (END_PAGE_ADDR + 1) * 8
 
   // @var set area
   unsigned int _counter;
@@ -197,6 +200,16 @@
   uint8_t SSD1306_DrawPixel (uint8_t, uint8_t);
 
   /**
+   * @desc    Send Same Bytes
+   *
+   * @param   uint8_t
+   * @param   uint8_t
+   *
+   * @return  uint8_t
+   */
+  uint8_t SSD1306_SendBytes (uint8_t, uint8_t);
+
+  /**
    * @desc    Draw line
    *  
    * @param   uint8_t
@@ -207,5 +220,27 @@
    * @return  uint8_t
    */
   uint8_t SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t);
+
+  /** 
+   * @desc    Draw line horizontal
+   *  
+   * @param   uint8_t
+   * @param   uint8_t
+   * @param   uint8_t
+   *
+   * @return  uint8_t
+   */
+  uint8_t SSD1306_DrawLineHorz (uint8_t, uint8_t, uint8_t);
+
+  /** 
+   * @desc    Draw line vertical
+   *  
+   * @param   uint8_t
+   * @param   uint8_t
+   * @param   uint8_t
+   *
+   * @return  uint8_t
+   */
+  uint8_t SSD1306_DrawLineVert (uint8_t, uint8_t, uint8_t);
 
 #endif
