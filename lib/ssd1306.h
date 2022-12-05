@@ -25,6 +25,7 @@
 #define __SSD1306_H__
 
   // includes
+  #include <string.h>
   #include "font.h"
   #include "twi.h"
 
@@ -80,13 +81,15 @@
   // AREA definition
   // ------------------------------------------------------------------------------------
   #define START_PAGE_ADDR           0
-  #define END_PAGE_ADDR             7     // 7 for 128x64, 3 for 128x32 version
-  #define START_COL_ADDR            0
-  #define END_COL_ADDR              127
+  #define END_PAGE_ADDR             3     // 7 for 128x64, 3 for 128x32 version
+  #define START_COLUMN_ADDR         0
+  #define END_COLUMN_ADDR           127
+  #define RAM_X_END                 END_COLUMN_ADDR + 1
+  #define RAM_Y_END                 END_PAGE_ADDR + 1
 
-  #define CACHE_SIZE_MEM            (1 + END_PAGE_ADDR) * (1 + END_COL_ADDR)
+  #define CACHE_SIZE_MEM            (1 + END_PAGE_ADDR) * (1 + END_COLUMN_ADDR)
 
-  #define MAX_X                     END_COL_ADDR
+  #define MAX_X                     END_COLUMN_ADDR
   #define MAX_Y                     (END_PAGE_ADDR + 1) * 8
 
   /**
@@ -101,7 +104,7 @@
   /**
    * @desc    SSD1306 Send Start and SLAW request
    *
-   * @param   uint8_t address
+   * @param   uint8_t
    *
    * @return  uint8_t
    */
@@ -110,7 +113,7 @@
   /**
    * @desc    SSD1306 Send command
    *
-   * @param   uint8_t command
+   * @param   uint8_t
    *
    * @return  uint8_t
    */
@@ -144,15 +147,6 @@
   uint8_t SSD1306_InverseScreen (void);
 
   /**
-   * @desc    SSD1306 Update screen
-   *
-   * @param   void
-   *
-   * @return  uint8_t
-   */
-  uint8_t SSD1306_UpdateScreen (void);
-
-  /**
    * @desc    SSD1306 Update text position
    *
    * @param   void
@@ -164,24 +158,12 @@
   /**
    * @desc    SSD1306 Set position
    *
-   * @param   uint8_t x
-   * @param   uint8_t y
+   * @param   uint8_t
+   * @param   uint8_t
    *
    * @return  uint8_t
    */
   uint8_t SSD1306_SetPosition (uint8_t, uint8_t);
-
-  /**
-   * @desc    SSD1306 Set window
-   *
-   * @param   uint8_t x1
-   * @param   uint8_t x2
-   * @param   uint8_t y1
-   * @param   uint8_t y2
-   *
-   * @return  void
-   */
-  uint8_t SSD1306_SetWindow (uint8_t, uint8_t, uint8_t, uint8_t);
 
   /**
    * @desc    SSD1306 Draw character
@@ -204,34 +186,45 @@
   /**
    * @desc    Draw pixel
    *
-   * @param   uint8_t x
-   * @param   uint8_t y
+   * @param   uint8_t
+   * @param   uint8_t
    *
    * @return  uint8_t
    */
   uint8_t SSD1306_DrawPixel (uint8_t, uint8_t);
 
   /**
-   * @desc    Draw line horizontal
+   * @desc    Draw line
+   *  
+   * @param   uint8_t
+   * @param   uint8_t
+   * @param   uint8_t
+   * @param   uint8_t
    *
-   * @param   uint8_t y
-   * @param   uint8_t x1
-   * @param   uint8_t x2
+   * @return  uint8_t
+   */
+  uint8_t SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t);
+
+  /** 
+   * @desc    Draw line horizontal
+   *  
+   * @param   uint8_t
+   * @param   uint8_t
+   * @param   uint8_t
    *
    * @return  uint8_t
    */
   uint8_t SSD1306_DrawLineHorz (uint8_t, uint8_t, uint8_t);
 
-  /**
-   * @desc    Draw line
-   *
-   * @param   uint8_t x1
-   * @param   uint8_t x2
-   * @param   uint8_t y1
-   * @param   uint8_t y2
+  /** 
+   * @desc    Draw line vertical
+   *  
+   * @param   uint8_t
+   * @param   uint8_t
+   * @param   uint8_t
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t);
+  uint8_t SSD1306_DrawLineVert (uint8_t, uint8_t, uint8_t);
 
 #endif
