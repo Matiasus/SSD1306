@@ -1,22 +1,23 @@
-/** 
- * ---------------------------------------------------------------+ 
+/**
+ * -------------------------------------------------------------------------------------+
  * @desc        SSD1306 OLED Driver
- * ---------------------------------------------------------------+ 
+ * -------------------------------------------------------------------------------------+
  *              Copyright (C) 2020 Marian Hrinko.
  *              Written by Marian Hrinko (mato.hrinko@gmail.com)
  *
  * @author      Marian Hrinko
  * @datum       06.10.2020
- * @update      19.07.2021
+ * @update      21.11.2022
  * @file        ssd1306.h
- * @version     2.0
- * @tested      AVR Atmega328
+ * @version     3.0
+ * @tested      AVR Atmega328p
  *
  * @depend      font.h, twi.h
- * ---------------------------------------------------------------+
+ * -------------------------------------------------------------------------------------+
  * @descr       Version 1.0 -> applicable for 1 display
  *              Version 2.0 -> rebuild to 'cacheMemLcd' array
- * ---------------------------------------------------------------+
+ *              Version 3.0 -> remove 'cacheMemLcd' approach
+ * -------------------------------------------------------------------------------------+
  * @usage       Basic Setup for OLED Display
  */
 
@@ -28,20 +29,17 @@
   #include "font.h"
   #include "twi.h"
 
-  // Success
-  // -------------------------------------------
+  // Success / Error
+  // ------------------------------------------------------------------------------------
   #define SSD1306_SUCCESS           0
-
-  // Error
-  // -------------------------------------------
   #define SSD1306_ERROR             1
 
   // Address definition
-  // -----------------------------------
+  // ------------------------------------------------------------------------------------
   #define SSD1306_ADDR              0x3C
 
   // Command definition
-  // -----------------------------------
+  // ------------------------------------------------------------------------------------
   #define SSD1306_COMMAND           0x80  // Continuation bit=1, D/C=0; 1000 0000
   #define SSD1306_COMMAND_STREAM    0x00  // Continuation bit=0, D/C=0; 0000 0000
   #define SSD1306_DATA              0xC0  // Continuation bit=1, D/C=1; 1100 0000
@@ -73,18 +71,17 @@
   #define SSD1306_VCOM_DESELECT     0xDB
 
   // Clear Color
-  // -----------------------------------
+  // ------------------------------------------------------------------------------------
   #define CLEAR_COLOR               0x00
 
   // Init Status
-  // -----------------------------------
+  // ------------------------------------------------------------------------------------
   #define INIT_STATUS               0xFF
 
   // AREA definition
-  // -----------------------------------
+  // ------------------------------------------------------------------------------------
   #define START_PAGE_ADDR           0
-  #define END_PAGE_ADDR             3     // 3 for 128 x 32 version
-  //#define END_PAGE_ADDR           7     // 7 for 128 x 64 version
+  #define END_PAGE_ADDR             3     // 7 for 128x64, 3 for 128x32 version
   #define START_COLUMN_ADDR         0
   #define END_COLUMN_ADDR           127
   #define RAM_X_END                 END_COLUMN_ADDR + 1
@@ -94,9 +91,6 @@
 
   #define MAX_X                     END_COLUMN_ADDR
   #define MAX_Y                     (END_PAGE_ADDR + 1) * 8
-
-  // @var set area
-  unsigned int _counter;
 
   /**
    * @desc    SSD1306 Init
@@ -198,16 +192,6 @@
    * @return  uint8_t
    */
   uint8_t SSD1306_DrawPixel (uint8_t, uint8_t);
-
-  /**
-   * @desc    Send Same Bytes
-   *
-   * @param   uint8_t
-   * @param   uint8_t
-   *
-   * @return  uint8_t
-   */
-  uint8_t SSD1306_SendBytes (uint8_t, uint8_t);
 
   /**
    * @desc    Draw line

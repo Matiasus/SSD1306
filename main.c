@@ -38,8 +38,6 @@ int main(void)
   SSD1306_Init ();
   // clear screen
   SSD1306_ClearScreen ();
-  // draw string
-  //  SSD1306_DrawString ("SSD1306 MATIASUS Copyright (C) 2020 Marian Hrinko. Copyright (C) 2020 Marian Hrinko. Copyright (C) 2020 Marian Hrinko.");
 /*
   while (x < MAX_Y) {
     SSD1306_DrawLine (x,x,0,y++);
@@ -57,10 +55,14 @@ int main(void)
   //SSD1306_DrawLineHorz (10,0,MAX_X);
 
   while (i < MAX_Y) {
-    SSD1306_DrawLine (0,MAX_X,i,i);
-    _delay_ms (100);
+    SSD1306_DrawLine (0,MAX_X-10,i,i);
+    //_delay_ms (100);
     i++;
   }
+
+  SSD1306_SetPosition (0, 0) ;
+  // draw string
+  SSD1306_DrawString ("SSD1306 MATIASUS Copyright (C) 2020 Marian Hrinko. Copyright (C) 2020 Marian Hrinko. Copyright (C) 2020 Marian Hrinko.");
 
   // return value
   return 0;
