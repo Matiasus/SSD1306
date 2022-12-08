@@ -20,7 +20,7 @@
  * --------------------------------------------------------------------------------------+
  * @usage       Basic Setup for OLED Display
  */
-// @includes
+ // @includes
 #include "ssd1306.h"
 
 // +---------------------------+
@@ -398,21 +398,22 @@ uint8_t SSD1306_SetPosition (uint8_t x, uint8_t y)
  * @desc    SSD1306 Update text poisition - this ensure that character will not be divided
  *          at the end of row, the whole character will be depicted on the new row
  *
- * @param   void
+ * @param   uint8_t column
+ * @param   uint8_t page
  *
  * @return  uint8_t
  */
-uint8_t SSD1306_UpdatePosition (void)
+uint8_t SSD1306_UpdatePosition (x, p)
 {
   uint8_t status = INIT_STATUS;                                   // TWI init status 0xFF
-  uint8_t x = _indexCol + CHARS_COLS_LENGTH + 1;                  // check end col position
+  //uint8_t x = _indexCol + CHARS_COLS_LENGTH + 1;                  // check end col position
 
   // check position
   // -------------------------------------------------------------------------------------
   if (x > END_COLUMN_ADDR) {
     // last page not reached
     // -----------------------------------------------------------------------------------
-    if (_indexPage < END_PAGE_ADDR) {
+    if (p < END_PAGE_ADDR) {
       _indexCol = 0;                                              // update column
       _indexPage = _indexPage + 1;                                // update page
       status = SSD1306_SetPosition (_indexCol, _indexPage);       // update position
@@ -422,7 +423,7 @@ uint8_t SSD1306_UpdatePosition (void)
     }
     // last page reached
     // -----------------------------------------------------------------------------------
-    if (_indexPage >= END_PAGE_ADDR) {
+    if (p >= END_PAGE_ADDR) {
       return SSD1306_ERROR;                                       // return out of range
     }
   }
@@ -434,17 +435,21 @@ uint8_t SSD1306_UpdatePosition (void)
  * @desc    SSD1306 Draw character
  *
  * @param   char character
+ * @param   enum font 
  *
  * @return  uint8_t
  */
-uint8_t SSD1306_DrawChar (char ch)
+uint8_t SSD1306_DrawChar (char ch, enum E_Font font)
 {
+  uint8_t byte;
   uint8_t status = INIT_STATUS;                                   // TWI init status 0xFF
   uint16_t i = 0;                                                 // counter
+  uint8_t next_x = _indexCol + CHARS_COLS_LENGTH + 1;
+  uint8_t next_p = _indexPage;
 
-  // update text position
+  // UPDATE / CHECK TEXT POSITION
   // -------------------------------------------------------------------------------------
-  status = SSD1306_UpdatePosition();
+  status = SSD1306_UpdatePosition(next_x, next_p);
   if (SSD1306_SUCCESS != status) {                                // check status
     return status;                                                // error
   }
@@ -461,14 +466,43 @@ uint8_t SSD1306_DrawChar (char ch)
   if (SSD1306_SUCCESS != status) {                                // check status
     return status;                                                // error
   }
-  //  send character byte to memory lcd
+  //  NORMAL FONT
   // -------------------------------------------------------------------------------------
-  while (i < CHARS_COLS_LENGTH) {
-    status = TWI_MT_Send_Data (pgm_read_byte (&FONTS[ch-32][i])); // send data col
-    if (SSD1306_SUCCESS != status) {                              // check status
-      return status;                                              // error
+  if (font == NORMAL) {
+    while (i < CHARS_COLS_LENGTH) {
+      byte = pgm_read_byte (&FONTS[ch-32][i]);
+      status = TWI_MT_Send_Data (byte);                           // send data col
+      if (SSD1306_SUCCESS != status) {                            // check status
+        return status;                                            // error
+      }
+      i++;                                                        // update counter
+      _indexCol++;                                                // update global col
     }
-    i++;                                                          // update counter
+  //  BOLD FONT
+  // -------------------------------------------------------------------------------------
+  } else if (font == BOLD) {
+    while (i < CHARS_COLS_LENGTH) {
+      byte = pgm_read_byte (&FONTS[ch-32][i]);
+      status = TWI_MT_Send_Data (byte);                           // send data col
+      status = TWI_MT_Send_Data (byte);                           // send data col
+      if (SSD1306_SUCCESS != status) {                            // check status
+        return status;                                            // error
+      }
+      i++;                                                        // update counter
+      _indexCol++;                                                // update global col
+    }
+  //  UNDERLINE FONT
+  // -------------------------------------------------------------------------------------
+  } else if (font == UNDERLINE) {
+    while (i < CHARS_COLS_LENGTH) {
+      byte = pgm_read_byte (&FONTS[ch-32][i]) | 0x80;
+      status = TWI_MT_Send_Data (byte);                           // send data col
+      if (SSD1306_SUCCESS != status) {                            // check status
+        return status;                                            // error
+      }
+      i++;                                                        // update counter
+      _indexCol++;                                                // update global col
+    }
   }
   //  send empty column to memory lcd
   // -------------------------------------------------------------------------------------
@@ -476,7 +510,67 @@ uint8_t SSD1306_DrawChar (char ch)
   if (SSD1306_SUCCESS != status) {                                // check status
     return status;                                                // error
   }
-  _indexCol = _indexCol + CHARS_COLS_LENGTH + 1;                  // update global col
+  _indexCol++;                                                    // update global col
+
+  // TWI STOP
+  // -------------------------------------------------------------------------------------
+  TWI_Stop ();
+
+  return SSD1306_SUCCESS;                                         // success
+}
+
+/**
+ * @desc    SSD1306 Draw character
+ *
+ * @param   char character
+ *
+ * @return  uint8_t
+ */
+uint8_t SSD1306_DrawCharBig (char ch)
+{
+  uint8_t byte;
+  uint8_t status = INIT_STATUS;                                   // TWI init status 0xFF
+  uint16_t i = 0;                                                 // counter
+  uint8_t next_x = _indexCol + 2*CHARS_COLS_LENGTH + 1;
+  uint8_t next_p = _indexPage + 1;
+
+  // UPDATE / CHECK TEXT POSITION
+  // -------------------------------------------------------------------------------------
+  status = SSD1306_UpdatePosition(next_x, next_p);
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+
+  // TWI START & SLAW
+  // -------------------------------------------------------------------------------------
+  status = SSD1306_Send_StartAndSLAW (SSD1306_ADDR);              // start & SLAW
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  // TWI control byte data stream
+  // -------------------------------------------------------------------------------------
+  status = TWI_MT_Send_Data (SSD1306_DATA_STREAM);                // send data 0x40
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  //  FONT 2x
+  // -------------------------------------------------------------------------------------
+  while (i < CHARS_COLS_LENGTH) {
+    byte = pgm_read_byte (&FONTS[ch-32][i]);
+    status = TWI_MT_Send_Data (byte);                             // send data col
+    if (SSD1306_SUCCESS != status) {                              // check status
+      return status;                                              // error
+    }
+    i++;                                                          // update counter
+    _indexCol++;                                                  // update global col
+  }
+  //  send empty column to memory lcd
+  // -------------------------------------------------------------------------------------
+  status = TWI_MT_Send_Data (CLEAR_COLOR);                        // ONE empty column
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  _indexCol++;                                                    // update global col
 
   // TWI STOP
   // -------------------------------------------------------------------------------------
