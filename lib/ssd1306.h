@@ -6,7 +6,7 @@
  *              Written by Marian Hrinko (mato.hrinko@gmail.com)
  *
  * @author      Marian Hrinko
- * @datum       06.10.2020
+ * @date        06.10.2020
  * @update      21.11.2022
  * @file        ssd1306.h
  * @version     3.0
@@ -92,6 +92,13 @@
   #define MAX_X                     END_COLUMN_ADDR
   #define MAX_Y                     (END_PAGE_ADDR + 1) * 8
 
+  // @enum
+  enum E_Font {
+    NORMAL = 0x00,
+    BOLD = 0x01,
+    UNDERLINE = 0x10
+  };
+
   /**
    * @desc    SSD1306 Init
    *
@@ -153,7 +160,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_UpdatePosition (void);
+  uint8_t SSD1306_UpdatePosition (uint8_t, uint8_t);
 
   /**
    * @desc    SSD1306 Set position
@@ -166,13 +173,36 @@
   uint8_t SSD1306_SetPosition (uint8_t, uint8_t);
 
   /**
+   * @desc    SSD1306 Set window
+   *
+   * @param   uint8_t column -> 0 ... 127
+   * @param   uint8_t column -> 0 ... 127
+   * @param   uint8_t page -> 0 ... 7
+   * @param   uint8_t page -> 0 ... 7
+   *
+   * @return  void
+   */
+  uint8_t SSD1306_SetWindow (uint8_t, uint8_t, uint8_t, uint8_t);
+
+  /**
    * @desc    SSD1306 Draw character
    *
    * @param   char
+   * @param   enum E_Font
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_DrawChar (char);
+  uint8_t SSD1306_DrawChar (char, enum E_Font);
+
+  /**
+   * @desc    SSD1306 Draw character big
+   *
+   * @param   char
+   * @param   enum E_Font
+   *
+   * @return  uint8_t
+   */
+  uint8_t SSD1306_DrawCharBig (char);
 
   /**
    * @desc    SSD1306 Draw string
@@ -181,7 +211,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_DrawString (char *);
+  uint8_t SSD1306_DrawString (char *, enum E_Font);
 
   /**
    * @desc    Draw pixel
