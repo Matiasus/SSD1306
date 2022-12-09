@@ -195,16 +195,6 @@
   uint8_t SSD1306_DrawChar (char, enum E_Font);
 
   /**
-   * @desc    SSD1306 Draw character big
-   *
-   * @param   char
-   * @param   enum E_Font
-   *
-   * @return  uint8_t
-   */
-  uint8_t SSD1306_DrawCharBig (char);
-
-  /**
    * @desc    SSD1306 Draw string
    *
    * @param   char *

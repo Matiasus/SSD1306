@@ -13,7 +13,7 @@ C library is aimed for driving [0.96" OLED display with SSD1306 driver](#demonst
   - Added new function -> [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline). Possible depicted any line (horizontal, vertical, with slope).
   - Possible to use for more than 1 display (not tested, cause displays that I have avialable had the same addresses). 
   - **!!!** ~1kB RAM memory consumption.
-- 3.0 - simplified version
+- 3.0 - simplified alphanumeric version
   - less RAM consumption
   - used for displaying alphanumeric characters
   - **!!!** no graphics functions
@@ -119,13 +119,11 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 ## Functions
 - [SSD1306_Init (uint8_t)](#ssd1306_init) - Init display
 - [SSD1306_ClearScreen (void)](#ssd1306_clearscreen) - Clear screen
-- [SSD1306_NormalScreen (uint8_t)](#ssd1306_normalscreen) - Normal screen
-- [SSD1306_InverseScreen (uint8_t)](#ssd1306_inversescreen) - Inverse screen
+- [SSD1306_NormalScreen (void)](#ssd1306_normalscreen) - Normal screen
+- [SSD1306_InverseScreen (void)](#ssd1306_inversescreen) - Inverse screen
 - [SSD1306_SetPosition (uint8_t, uint8_t)](#ssd1306_setposition) - Set position
-- [SSD1306_DrawChar (char)](#ssd1306_drawchar) - Draw specific character
-- [SSD1306_DrawString (char*)](#ssd1306_drawstring) - Draw specific string
-- [SSD1306_UpdateScreen (uint8_t)](#ssd1306_updatescreen) - Update content on display
-- [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline) - Draw line
+- [SSD1306_DrawChar (char, enum E_Font)](#ssd1306_drawchar) - Draw specific character (bold | underline | normal)
+- [SSD1306_DrawString (char*, enum E_Font)](#ssd1306_drawstring) - Draw specific string (bold | underline | normal)
 
 ## Demonstration
 <img src="img/ssd1306_v20.png" />
@@ -133,3 +131,4 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 ## Links
 - [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf)
 - [Atmega328](https://ww1.microchip.com/downloads/en/DeviceDoc/ATmega48A-PA-88A-PA-168A-PA-328-P-DS-DS40002061B.pdf)
+
