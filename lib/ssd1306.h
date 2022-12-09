@@ -81,7 +81,7 @@
   // AREA definition
   // ------------------------------------------------------------------------------------
   #define START_PAGE_ADDR           0
-  #define END_PAGE_ADDR             3     // 7 for 128x64, 3 for 128x32 version
+  #define END_PAGE_ADDR             7     // 7 for 128x64, 3 for 128x32 version
   #define START_COLUMN_ADDR         0
   #define END_COLUMN_ADDR           127
   #define RAM_X_END                 END_COLUMN_ADDR + 1
@@ -100,15 +100,6 @@
   };
 
   /**
-   * @desc    SSD1306 Init
-   *
-   * @param   void
-   *
-   * @return  uint8_t
-   */
-  uint8_t SSD1306_Init (void);
-
-  /**
    * @desc    SSD1306 Send Start and SLAW request
    *
    * @param   uint8_t
@@ -125,6 +116,15 @@
    * @return  uint8_t
    */
   uint8_t SSD1306_Send_Command (uint8_t);
+
+  /**
+   * @desc    SSD1306 Init
+   *
+   * @param   void
+   *
+   * @return  uint8_t
+   */
+  uint8_t SSD1306_Init (void);
 
   /**
    * @desc    SSD1306 Clear screen
@@ -212,49 +212,5 @@
    * @return  uint8_t
    */
   uint8_t SSD1306_DrawString (char *, enum E_Font);
-
-  /**
-   * @desc    Draw pixel
-   *
-   * @param   uint8_t
-   * @param   uint8_t
-   *
-   * @return  uint8_t
-   */
-  uint8_t SSD1306_DrawPixel (uint8_t, uint8_t);
-
-  /**
-   * @desc    Draw line
-   *  
-   * @param   uint8_t
-   * @param   uint8_t
-   * @param   uint8_t
-   * @param   uint8_t
-   *
-   * @return  uint8_t
-   */
-  uint8_t SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t);
-
-  /** 
-   * @desc    Draw line horizontal
-   *  
-   * @param   uint8_t
-   * @param   uint8_t
-   * @param   uint8_t
-   *
-   * @return  uint8_t
-   */
-  uint8_t SSD1306_DrawLineHorz (uint8_t, uint8_t, uint8_t);
-
-  /** 
-   * @desc    Draw line vertical
-   *  
-   * @param   uint8_t
-   * @param   uint8_t
-   * @param   uint8_t
-   *
-   * @return  uint8_t
-   */
-  uint8_t SSD1306_DrawLineVert (uint8_t, uint8_t, uint8_t);
 
 #endif
