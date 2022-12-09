@@ -16,7 +16,7 @@
  * --------------------------------------------------------------------------------------+ 
  * @descr       Version 1.0 -> applicable for 1 display
  *              Version 2.0 -> rebuild to 'cacheMemLcd' array
- *              Version 3.0 -> less RAM requirement but with few limitation
+ *              Version 3.0 -> simplified alphanumeric version
  * --------------------------------------------------------------------------------------+ 
  */
 

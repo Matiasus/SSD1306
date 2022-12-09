@@ -4,7 +4,15 @@
 Detailed information are described in [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf).
 
 ## Library
-C library is aimed for driving [0.96" OLED display with SSD1306 driver](#demonstration) 128x64 through TWI's Atmega328p.
+C library is aimed for driving [0.96" OLED display with SSD1306 driver](#demonstration) 128x64 & 128x32 version through TWI's Atmega328p. Settings for different versions:
+  - 128x64 version
+    - argument command of **SSD1306_SET_MUX_RATIO** set to *63* (ssd1306.c)
+    - argument command of **SSD1306_COM_PIN_CONF** set to *0x12*  (ssd1306.c)
+    - **END_PAGE_ADDR** set to 7 (ssd1306.h)
+  - 128x32 version
+    - argument command of **SSD1306_SET_MUX_RATIO** set to *31* (ssd1306.c)
+    - argument command of **SSD1306_COM_PIN_CONF** set to *0x02* (ssd1306.c)
+    - **END_PAGE_ADDR** set to 3 (ssd1306.h)
 
 ### Versions
 - 1.0 - basic functions. The first publication.
@@ -16,7 +24,7 @@ C library is aimed for driving [0.96" OLED display with SSD1306 driver](#demonst
 - 3.0 - simplified alphanumeric version
   - less RAM consumption
   - used for displaying alphanumeric characters
-  - **!!!** no graphics functions
+  - **!!!** no graphic functions
 
 ## Dependencies
 - [font.c](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/font.c)
