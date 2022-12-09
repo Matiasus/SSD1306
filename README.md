@@ -11,7 +11,12 @@ C library is aimed for driving [0.96" OLED display with SSD1306 driver](#demonst
 - 2.0 - more changes: 
   - rebuild to cacheMemLcd array. It means that every request is stored in cache array and then is depicted on the display by function [SSD1306_UpdateScreen (uint8_t)](#ssd1306_updatescreen). 
   - Added new function -> [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline). Possible depicted any line (horizontal, vertical, with slope).
-  - Possible to use for more than 1 display (not tested, cause displays that I have avialable had the same addresses).
+  - Possible to use for more than 1 display (not tested, cause displays that I have avialable had the same addresses). 
+  - **!!!** ~1kB RAM memory consumption.
+- 3.0 - simplified version
+  - less RAM consumption
+  - used for displaying alphanumeric characters
+  - **!!!** no graphics functions
 
 ## Dependencies
 - [font.c](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/font.c)
