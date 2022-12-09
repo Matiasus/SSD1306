@@ -32,15 +32,9 @@
  */
 int main(void)
 {
-  uint8_t i = 0;
   
   SSD1306_Init ();
   SSD1306_ClearScreen ();
-
-  while (i < MAX_Y) {
-    SSD1306_DrawLine (0,MAX_X,i,i);
-    i++;
-  }
 
   SSD1306_SetPosition (25, 0) ;
   SSD1306_DrawString ("SSD1306", BOLD);
