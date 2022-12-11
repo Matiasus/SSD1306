@@ -39,10 +39,10 @@ void TWI_Init (void)
   // TWBR = {(fcpu/fclk) - 16 } / (2*4^Prescaler)
   // +++++++++++++++++++++++++++++++++++++++++++++
   // @param1 value of TWBR (m16) 
-  //  fclk = 400kHz (m16); TWBR = 3
-  //  fclk = 100kHz (m16); TWBR = 20
+  //  fclk = 400kHz; TWBR = 3
+  //  fclk = 100kHz; TWBR = 20
   // @param1 value of TWBR (m328p)
-  //  fclk = 400kHz (m16); TWBR = 2
+  //  fclk = 400kHz; TWBR = 2
   // @param2 value of Prescaler = 1
   TWI_FREQ (2, 1);
 }
