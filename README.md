@@ -4,14 +4,14 @@
 Detailed information are described in [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf).
 
 ## Library
-C library is aimed for driving [0.96" OLED display with SSD1306 driver](#demonstration) 128x64 & 128x32 version through TWI's Atmega328p. Settings for different versions:
+C library is aimed for driving [0.96" OLED display with SSD1306 driver](#demonstration) 128x64 or 128x32 version through TWI's (I2C). Settings for particular versions:
   - 128x64 version
-    - argument command of **SSD1306_SET_MUX_RATIO** set to *63* (ssd1306.c)
-    - argument command of **SSD1306_COM_PIN_CONF** set to *0x12*  (ssd1306.c)
+    - command argument **SSD1306_SET_MUX_RATIO** set to *63* (ssd1306.c)
+    - command argument **SSD1306_COM_PIN_CONF** set to *0x12*  (ssd1306.c)
     - **END_PAGE_ADDR** set to 7 (ssd1306.h)
   - 128x32 version
-    - argument command of **SSD1306_SET_MUX_RATIO** set to *31* (ssd1306.c)
-    - argument command of **SSD1306_COM_PIN_CONF** set to *0x02* (ssd1306.c)
+    - command argument **SSD1306_SET_MUX_RATIO** set to *31* (ssd1306.c)
+    - command argument **SSD1306_COM_PIN_CONF** set to *0x02* (ssd1306.c)
     - **END_PAGE_ADDR** set to 3 (ssd1306.h)
 
 ### Versions
@@ -22,8 +22,9 @@ C library is aimed for driving [0.96" OLED display with SSD1306 driver](#demonst
   - Possible to use for more than 1 display (not tested, cause displays that I have avialable had the same addresses). 
   - **!!!** ~1kB RAM memory consumption.
 - 3.0 - simplified alphanumeric version
-  - less RAM consumption
   - used for displaying alphanumeric characters
+  - **one display** applicable
+  - **only few RAM bytes** consumption
   - **!!!** no graphic functions
 
 ## Dependencies
@@ -43,7 +44,7 @@ Prior defined for MCU Atmega328p / Atmega8 / Atmega16. Need to be carefull with 
 | SDA | PC1 | PC4 |
 
 ### Tested
-Library was tested and proved on **_0.96″ OLED Display with SSD1306 driver_** and **_Atmega328p_**.
+Library was tested and proved with **_0.96″ 128x64 and 128x32 OLED Display (SSD1306 driver)_** and **_Atmega328p_**.
 
 ## Init OLED Sequence
 Init sequence OLED display was defined according to page 64 (next to last page) of [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf).
@@ -125,16 +126,20 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 // +---------------------------+
 ```
 ## Functions
-- [SSD1306_Init (uint8_t)](#ssd1306_init) - Init display
+- [SSD1306_Init (void)](#ssd1306_init) - Init display
 - [SSD1306_ClearScreen (void)](#ssd1306_clearscreen) - Clear screen
 - [SSD1306_NormalScreen (void)](#ssd1306_normalscreen) - Normal screen
 - [SSD1306_InverseScreen (void)](#ssd1306_inversescreen) - Inverse screen
+- [SSD1306_SetWindow (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_setwindow) - Set window
 - [SSD1306_SetPosition (uint8_t, uint8_t)](#ssd1306_setposition) - Set position
 - [SSD1306_DrawChar (char, enum E_Font)](#ssd1306_drawchar) - Draw specific character (bold | underline | normal)
 - [SSD1306_DrawString (char*, enum E_Font)](#ssd1306_drawstring) - Draw specific string (bold | underline | normal)
 
 ## Demonstration
-<img src="img/ssd1306_v20.png" />
+<img src="img/ssd1306_v300.jpg" />
+
+## Acknowledgement
+- [Adafruit SSD1306 Library](https://github.com/adafruit/Adafruit_SSD1306)
 
 ## Links
 - [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf)
