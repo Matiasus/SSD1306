@@ -16,7 +16,7 @@
  * --------------------------------------------------------------------------------------+
  * @descr       Version 1.0.0 -> applicable for 1 display
  *              Version 2.0.0 -> rebuild to 'cacheMemLcd' array
- *              Version 3.0.0 -> simplified alphanumeric version
+ *              Version 3.0.0 -> simplified alphanumeric version for 1 display
  * --------------------------------------------------------------------------------------+
  * @usage       Basic Setup for OLED Display
  */
@@ -429,7 +429,7 @@ void SSD1306_SetPosition (uint8_t x, uint8_t y)
  *
  * @return  uint8_t
  */
-uint8_t SSD1306_UpdTxtPosition (void) 
+uint8_t SSD1306_UpdatePosition (void) 
 {
   // y / 8
   uint8_t y = _counter >> 7;
@@ -469,7 +469,7 @@ uint8_t SSD1306_DrawChar (char character)
 
   // update text position
   // this ensure that character will not be divided at the end of row, the whole character will be depicted on the new row
-  if (SSD1306_UpdTxtPosition () == SSD1306_ERROR) {
+  if (SSD1306_UpdatePosition () == SSD1306_ERROR) {
     // error
     return SSD1306_ERROR;
   }

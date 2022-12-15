@@ -15,17 +15,22 @@ C library is aimed for driving [0.96" OLED display with SSD1306 driver](#demonst
     - **END_PAGE_ADDR** set to 3 (ssd1306.h)
 
 ### Versions
-- 1.0 - basic functions. The first publication.
+- 1.0.0 - basic functions. The first publication.
 - [2.0.0](https://github.com/Matiasus/SSD1306/tree/v2.0.0) - more changes: 
   - rebuild to 'cacheMemLcd' array approach. It means that every request is stored in 'cacheMemLcd' array (RAM) and by the [SSD1306_UpdateScreen (uint8_t)](#ssd1306_updatescreen) function is printed on the display.
   - added new function -> [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline). Possible depicted any line (horizontal, vertical, with slope).
   - possible to use for more than 1 display (not tested). 
   - **!!!** ~1kB RAM memory consumption.
+- [3.0.0](https://github.com/Matiasus/SSD1306/tree/v3.0.0) - simplified alphanumeric version
+  - displaying alphanumeric characters
+  - for **one display** applicable
+  - **only few RAM bytes** consumption
+  - **!!!** no graphic functions like drawLine
 
 ## Dependencies
-- [font.h](https://github.com/Matiasus/SSD1306/blob/v2.0.0/lib/font.h)
-- [twi.c](https://github.com/Matiasus/SSD1306/blob/v2.0.0/lib/twi.c)
-- [twi.h](https://github.com/Matiasus/SSD1306/blob/v2.0.0/lib/twi.h)
+- [font.h](https://github.com/Matiasus/SSD1306/blob/master/lib/font.h)
+- [twi.c](https://github.com/Matiasus/SSD1306/blob/master/lib/twi.c)
+- [twi.h](https://github.com/Matiasus/SSD1306/blob/master/lib/twi.h)
 
 Font.c can be modified according to application requirements with form defined in font.c. Maximal permissible horizontal dimension is 8 bits.
 
@@ -38,7 +43,7 @@ Prior defined for MCU Atmega328p / Atmega8 / Atmega16. Need to be carefull with 
 | SDA | PC1 | PC4 |
 
 ### Tested
-Library was tested and proved on **_0.96″ OLED Display with SSD1306 driver_** and **_Atmega328p_**.
+Library was tested and proved with **_0.96″ 128x64 and 128x32 OLED Display (SSD1306 driver)_** and **_Atmega328p_**.
 
 ## Init OLED Sequence
 Init sequence OLED display was defined according to page 64 (next to last page) of [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf).
@@ -130,8 +135,14 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 - [SSD1306_UpdateScreen (uint8_t)](#ssd1306_updatescreen) - Update content on display
 - [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline) - Draw line
 
-## Demonstration
+## Demonstration version v1.0.0
+<img src="img/ssd1306_v100.jpg" />
+
+## Demonstration version v2.0.0
 <img src="img/ssd1306_v200.png" />
+
+## Demonstration version v3.0.0
+<img src="img/ssd1306_v300.jpg" />
 
 ## Acknowledgement
 - [Adafruit SSD1306 Library](https://github.com/adafruit/Adafruit_SSD1306)
@@ -139,3 +150,4 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 ## Links
 - [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf)
 - [Atmega328](https://ww1.microchip.com/downloads/en/DeviceDoc/ATmega48A-PA-88A-PA-168A-PA-328-P-DS-DS40002061B.pdf)
+

@@ -16,7 +16,7 @@
  * -------------------------------------------------------------------------------------+
  * @descr       Version 1.0.0 -> applicable for 1 display
  *              Version 2.0.0 -> rebuild to 'cacheMemLcd' array
- *              Version 3.0.0 -> simplified alphanumeric version
+ *              Version 3.0.0 -> simplified alphanumeric version for 1 display
  * -------------------------------------------------------------------------------------+
  * @usage       Basic Setup for OLED Display
  */
@@ -36,7 +36,7 @@
 
   // Address definition
   // ------------------------------------------------------------------------------------
-  #define SSD1306_ADDRESS           0x3C
+  #define SSD1306_ADDR              0x3C
 
   // Command definition
   // ------------------------------------------------------------------------------------
@@ -165,7 +165,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_UpdTxtPosition (void);
+  uint8_t SSD1306_UpdatePosition (void);
 
   /**
    * @desc    SSD1306 Set position
