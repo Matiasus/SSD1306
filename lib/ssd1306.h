@@ -7,16 +7,16 @@
  *
  * @author      Marian Hrinko
  * @date        06.10.2020
- * @update      21.11.2022
+ * @update      15.12.2022
  * @file        ssd1306.h
- * @version     3.0
+ * @version     3.0.0
  * @tested      AVR Atmega328p
  *
  * @depend      font.h, twi.h
  * -------------------------------------------------------------------------------------+
- * @descr       Version 1.0 -> applicable for 1 display
- *              Version 2.0 -> rebuild to 'cacheMemLcd' array
- *              Version 3.0 -> simplified alphanumeric version
+ * @descr       Version 1.0.0 -> applicable for 1 display
+ *              Version 2.0.0 -> rebuild to 'cacheMemLcd' array
+ *              Version 3.0.0 -> simplified alphanumeric version for 1 display
  * -------------------------------------------------------------------------------------+
  * @usage       Basic Setup for OLED Display
  */

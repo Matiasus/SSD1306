@@ -6,29 +6,28 @@ Detailed information are described in [Datasheet SSD1306](https://cdn-shop.adafr
 ## Library
 C library is aimed for driving [0.96" OLED display with SSD1306 driver](#demonstration) 128x64 or 128x32 version through TWI's (I2C). Settings for particular versions:
   - 128x64 version
-    - command argument **SSD1306_SET_MUX_RATIO** set to *63* (ssd1306.c)
+    - command argument **SSD1306_SET_MUX_RATIO** set to *0x3F* (ssd1306.c)
     - command argument **SSD1306_COM_PIN_CONF** set to *0x12*  (ssd1306.c)
     - **END_PAGE_ADDR** set to 7 (ssd1306.h)
   - 128x32 version
-    - command argument **SSD1306_SET_MUX_RATIO** set to *31* (ssd1306.c)
+    - command argument **SSD1306_SET_MUX_RATIO** set to *0x1F* (ssd1306.c)
     - command argument **SSD1306_COM_PIN_CONF** set to *0x02* (ssd1306.c)
     - **END_PAGE_ADDR** set to 3 (ssd1306.h)
 
 ### Versions
-- 1.0 - basic functions. The first publication.
-- 2.0 - more changes: 
-  - rebuild to cacheMemLcd array. It means that every request is stored in cache array and then is depicted on the display by function [SSD1306_UpdateScreen (uint8_t)](#ssd1306_updatescreen). 
-  - Added new function -> [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline). Possible depicted any line (horizontal, vertical, with slope).
-  - Possible to use for more than 1 display (not tested, cause displays that I have avialable had the same addresses). 
+- 1.0.0 - basic functions. The first publication.
+- [2.0.0](https://github.com/Matiasus/SSD1306/tree/v2.0.0) - more changes: 
+  - rebuild to 'cacheMemLcd' array approach. It means that every request is stored in 'cacheMemLcd' array (RAM) and by the [SSD1306_UpdateScreen (uint8_t)](#ssd1306_updatescreen) function is printed on the display.
+  - added new function -> [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline). Possible depicted any line (horizontal, vertical, with slope).
+  - possible to use for more than 1 display (not tested). 
   - **!!!** ~1kB RAM memory consumption.
-- 3.0 - simplified alphanumeric version
-  - used for displaying alphanumeric characters
-  - **one display** applicable
+- [3.0.0](https://github.com/Matiasus/SSD1306/tree/v3.0.0) - simplified alphanumeric version
+  - displaying alphanumeric characters
+  - for **one display** applicable
   - **only few RAM bytes** consumption
-  - **!!!** no graphic functions
+  - **!!!** no graphic functions like drawLine
 
 ## Dependencies
-- [font.c](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/font.c)
 - [font.h](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/font.h)
 - [twi.c](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/twi.c)
 - [twi.h](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/twi.h)
@@ -125,17 +124,13 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 // |          0xAF             |
 // +---------------------------+
 ```
-## Functions
-- [SSD1306_Init (void)](#ssd1306_init) - Init display
-- [SSD1306_ClearScreen (void)](#ssd1306_clearscreen) - Clear screen
-- [SSD1306_NormalScreen (void)](#ssd1306_normalscreen) - Normal screen
-- [SSD1306_InverseScreen (void)](#ssd1306_inversescreen) - Inverse screen
-- [SSD1306_SetWindow (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_setwindow) - Set window
-- [SSD1306_SetPosition (uint8_t, uint8_t)](#ssd1306_setposition) - Set position
-- [SSD1306_DrawChar (char, enum E_Font)](#ssd1306_drawchar) - Draw specific character (bold | underline | normal)
-- [SSD1306_DrawString (char*, enum E_Font)](#ssd1306_drawstring) - Draw specific string (bold | underline | normal)
+## Demonstration version v1.0.0
+<img src="img/ssd1306_v100.jpg" />
 
-## Demonstration
+## Demonstration version v2.0.0
+<img src="img/ssd1306_v200.jpg" />
+
+## Demonstration version v3.0.0
 <img src="img/ssd1306_v300.jpg" />
 
 ## Acknowledgement

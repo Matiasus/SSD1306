@@ -9,14 +9,14 @@
  * @date        06.10.2020
  * @update      19.07.2021
  * @file        main.c
- * @version     3.0
+ * @version     3.0.0
  * @tested      AVR Atmega328p
  *
  * @depend      lib/ssd1306.h
  * --------------------------------------------------------------------------------------+ 
- * @descr       Version 1.0 -> applicable for 1 display
- *              Version 2.0 -> rebuild to 'cacheMemLcd' array
- *              Version 3.0 -> simplified alphanumeric version
+ * @descr       Version 1.0.0 -> applicable for 1 display
+ *              Version 2.0.0 -> rebuild to 'cacheMemLcd' array
+ *              Version 3.0.0 -> simplified alphanumeric version for 1 display
  * --------------------------------------------------------------------------------------+ 
  */
 
