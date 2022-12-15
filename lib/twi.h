@@ -1,7 +1,7 @@
 /** 
- * ---------------------------------------------------------------+ 
+ * --------------------------------------------------------------------------------------+
  * @desc        Two Wire Interface / I2C Communication
- * ---------------------------------------------------------------+ 
+ * --------------------------------------------------------------------------------------+
  *              Copyright (C) 2020 Marian Hrinko.
  *              Written by Marian Hrinko (mato.hrinko@gmail.com)
  *
@@ -10,16 +10,19 @@
  * @file        twi.h
  * @tested      AVR Atmega16, ATmega8, Atmega328
  *
- * @depend      
- * ---------------------------------------------------------------+
+ * @depend      avr/io.h
+ * --------------------------------------------------------------------------------------+
  * @usage       Basic Master Transmit Operation
  */
 
 #ifndef __TWI_H__
 #define __TWI_H__
 
+  // @includes
+  #include <avr/io.h>
+
   // define register for TWI communication
-  // -------------------------------------------
+  // -------------------------------------------------------------------------------------
   #if defined(__AVR_ATmega16__) || defined(__AVR_ATmega8__) || defined(__AVR_ATmega328P__)
 
     #define TWI_TWAR            TWAR // TWI (Slave) Address Register
@@ -31,22 +34,22 @@
   #endif
 
   // Success
-  // -------------------------------------------
+  // -------------------------------------------------------------------------------------
   #ifndef SUCCESS
     #define SUCCESS             0
   #endif
 
   // Error
-  // -------------------------------------------
+  // -------------------------------------------------------------------------------------
   #ifndef ERROR
     #define ERROR               1
   #endif 
 
-  // ++++++++++++++++++++++++++++++++++++++++++
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   //
   //        M A S T E R   M O D E
   //
-  // ++++++++++++++++++++++++++++++++++++++++++  
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
   // Master Mode - Transmitter / Receiver
   #define TWI_START_ACK         0x08  // A START condition has been transmitted
   #define TWI_REP_START_ACK     0x10  // A repeated START condition has been transmitted
@@ -62,11 +65,11 @@
   #define TWI_MR_DATA_ACK       0x50  // Data byte has been received; ACK has been received
   #define TWI_MR_DATA_NACK      0x58  // Data byte has been received; NOT ACK has been received
   
-  // ++++++++++++++++++++++++++++++++++++++++++
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   //
   //         S L A V E   M O D E
   //
-  // ++++++++++++++++++++++++++++++++++++++++++
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Slave Receiver Mode
   #define TWI_SR_SLAW_ACK       0x60  // Own Slave address has been received; ACK returned
   #define TWI_SR_ALMOA_ACK      0x68  // Arbitration Lost in SLA+R/W as Master; Own Slave address has been received; ACK returned
@@ -85,7 +88,7 @@
   #define TWI_ST_DATA_LOST_ACK  0xC8  // Last data byte in TWDR has been transmitted (TWEA = '0'); ACK has been received
 
   // TWI CLK frequency
-  // -------------------------------------------
+  // -------------------------------------------------------------------------------------
   //  @param TWBR
   //  @param Prescaler
   //    TWPS1 TWPS0  - PRESCALER
@@ -96,21 +99,21 @@
   #define TWI_FREQ(BIT_RATE, PRESCALER) { TWI_TWBR = BIT_RATE; TWI_TWSR |= (TWI_TWSR & 0x03) | PRESCALER; }
 
   // TWI start condition
-  // -------------------------------------------
+  // -------------------------------------------------------------------------------------
   // (1 <<  TWEN) - TWI Enable
   // (1 << TWINT) - TWI Interrupt Flag - must be cleared by set
   // (1 << TWSTA) - TWI Start
   #define TWI_START()                   { TWI_TWCR = (1 << TWEN) | (1 << TWINT) | (1 << TWSTA); }
 
   // TWI stop condition
-  // -------------------------------------------
+  // -------------------------------------------------------------------------------------
   // (1 <<  TWEN) - TWI Enable
   // (1 << TWINT) - TWI Interrupt Flag - must be cleared by set
   // (1 << TWSTO) - TWI Stop
   #define TWI_STOP()                    { TWI_TWCR = (1 << TWEN) | (1 << TWINT) | (1 << TWSTO); }
 
   // TWI enable
-  // -------------------------------------------
+  // -------------------------------------------------------------------------------------
   // (1 <<  TWEN) - TWI Enable
   // (1 << TWINT) - TWI Interrupt Flag - must be cleared by set
   #define TWI_ENABLE()                  { TWI_TWCR = (1 << TWEN) | (1 << TWINT); }
@@ -128,7 +131,7 @@
    *
    * @return  void
    */
-  void TWI_Init(void);
+  void TWI_Init (void);
 
   /**
    * @desc    TWI MT Start
@@ -137,7 +140,7 @@
    *
    * @return  char
    */
-  char TWI_MT_Start(void);
+  char TWI_MT_Start (void);
 
   /**
    * @desc    TWI Send SLAW
@@ -146,7 +149,7 @@
    *
    * @return  unsigned char
    */
-  char TWI_MT_Send_SLAW(char);
+  char TWI_MT_Send_SLAW (char);
 
   /**
    * @desc    TWI Send data
@@ -155,7 +158,7 @@
    *
    * @return  char
    */
-  char TWI_MT_Send_Data(char);
+  char TWI_MT_Send_Data (char);
 
   /**
    * @desc    TWI Send SLAR
@@ -164,7 +167,7 @@
    *
    * @return  unsigned char
    */
-  char TWI_MR_Send_SLAR(char);
+  char TWI_MR_Send_SLAR (char);
 
   /**
    * @desc    TWI stop
@@ -173,6 +176,6 @@
    *
    * @return  void
    */
-  void TWI_Stop(void);
+  void TWI_Stop (void);
   
 #endif
