@@ -4,20 +4,28 @@
 Detailed information are described in [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf).
 
 ## Library
-C library is aimed for driving [0.96" OLED display with SSD1306 driver](#demonstration) 128x64 through TWI's Atmega328p.
+C library is aimed for driving [0.96" OLED display with SSD1306 driver](#demonstration) 128x64 or 128x32 version through TWI's (I2C). Settings for particular versions:
+  - 128x64 version
+    - command argument **SSD1306_SET_MUX_RATIO** set to *0x3F* (ssd1306.c)
+    - command argument **SSD1306_COM_PIN_CONF** set to *0x12*  (ssd1306.c)
+    - **END_PAGE_ADDR** set to 7 (ssd1306.h)
+  - 128x32 version
+    - command argument **SSD1306_SET_MUX_RATIO** set to *0x1F* (ssd1306.c)
+    - command argument **SSD1306_COM_PIN_CONF** set to *0x02* (ssd1306.c)
+    - **END_PAGE_ADDR** set to 3 (ssd1306.h)
 
 ### Versions
 - 1.0 - basic functions. The first publication.
-- 2.0 - more changes: 
-  - rebuild to cacheMemLcd array. It means that every request is stored in cache array and then is depicted on the display by function [SSD1306_UpdateScreen (uint8_t)](#ssd1306_updatescreen). 
-  - Added new function -> [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline). Possible depicted any line (horizontal, vertical, with slope).
-  - Possible to use for more than 1 display (not tested, cause displays that I have avialable had the same addresses).
+- [2.0.0](https://github.com/Matiasus/SSD1306/tree/v2.0.0) - more changes: 
+  - rebuild to 'cacheMemLcd' array approach. It means that every request is stored in 'cacheMemLcd' array (RAM) and by the [SSD1306_UpdateScreen (uint8_t)](#ssd1306_updatescreen) function is printed on the display.
+  - added new function -> [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline). Possible depicted any line (horizontal, vertical, with slope).
+  - possible to use for more than 1 display (not tested). 
+  - **!!!** ~1kB RAM memory consumption.
 
 ## Dependencies
-- [font.c](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/font.c)
-- [font.h](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/font.h)
-- [twi.c](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/twi.c)
-- [twi.h](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/twi.h)
+- [font.h](https://github.com/Matiasus/SSD1306/blob/v2.0.0/lib/font.h)
+- [twi.c](https://github.com/Matiasus/SSD1306/blob/v2.0.0/lib/twi.c)
+- [twi.h](https://github.com/Matiasus/SSD1306/blob/v2.0.0/lib/twi.h)
 
 Font.c can be modified according to application requirements with form defined in font.c. Maximal permissible horizontal dimension is 8 bits.
 
@@ -123,7 +131,10 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 - [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline) - Draw line
 
 ## Demonstration
-<img src="img/ssd1306_v20.png" />
+<img src="img/ssd1306_v200.png" />
+
+## Acknowledgement
+- [Adafruit SSD1306 Library](https://github.com/adafruit/Adafruit_SSD1306)
 
 ## Links
 - [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf)
