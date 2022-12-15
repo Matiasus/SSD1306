@@ -32,7 +32,6 @@
  */
 int main(void)
 {
-  
   SSD1306_Init ();
   SSD1306_ClearScreen ();
 
