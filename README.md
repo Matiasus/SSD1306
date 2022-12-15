@@ -128,7 +128,7 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 <img src="img/ssd1306_v100.jpg" />
 
 ## Demonstration version v2.0.0
-<img src="img/ssd1306_v200.jpg" />
+<img src="img/ssd1306_v200.png" />
 
 ## Demonstration version v3.0.0
 <img src="img/ssd1306_v300.jpg" />
