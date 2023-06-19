@@ -519,7 +519,7 @@ uint8_t SSD1306_DrawPixel (uint8_t x, uint8_t y)
   uint8_t pixel = 0;
 
   // if out of range
-  if ((x > MAX_X) && (y > MAX_Y)) {
+  if ((x > MAX_X) || (y > MAX_Y)) {
     // out of range
     return SSD1306_ERROR;
   }
