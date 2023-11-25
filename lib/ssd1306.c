@@ -317,6 +317,42 @@ uint8_t SSD1306_ClearScreen (void)
   if (SSD1306_SUCCESS != status) {                                // check status
     return status;                                                // error
   }
+  // COLUMN
+  // -------------------------------------------------------------------------------------
+  status = SSD1306_Send_Command (SSD1306_SET_COLUMN_ADDR);        // 0x21
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  status = SSD1306_Send_Command (0);                              // start COLUMN
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  status = SSD1306_Send_Command (END_COLUMN_ADDR);                // end COLUMN
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  _indexCol = 0;                                                  // update column index
+  // PAGE
+  // -------------------------------------------------------------------------------------
+  status = SSD1306_Send_Command (SSD1306_SET_PAGE_ADDR);          // 0x22
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  status = SSD1306_Send_Command (0);                              // start PAGE
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  status = SSD1306_Send_Command (END_PAGE_ADDR);                  // end PAGE
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
+  _indexPage = 0;                                                 // update column index  
+  // TWI control byte data stream
+  // -------------------------------------------------------------------------------------
+  status = TWI_MT_Send_Data (SSD1306_DATA_STREAM);                // send data 0x40
+  if (SSD1306_SUCCESS != status) {                                // check status
+    return status;                                                // error
+  }
   // TWI control byte data stream
   // -------------------------------------------------------------------------------------
   status = TWI_MT_Send_Data (SSD1306_DATA_STREAM);                // send data 0x40
