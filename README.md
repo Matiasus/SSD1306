@@ -15,13 +15,13 @@ C library is aimed for driving [0.96" OLED display with SSD1306 driver](#demonst
     - **END_PAGE_ADDR** set to 3 (ssd1306.h)
 
 ### Versions
-- 1.0.0 - basic functions. The first publication.
-- [2.0.0](https://github.com/Matiasus/SSD1306/tree/v2.0.0) - more changes: 
+- 1.0 - basic functions. The first publication.
+- [2.0](https://github.com/Matiasus/SSD1306/tree/v2.0.0) - more changes: 
   - rebuild to 'cacheMemLcd' array approach. It means that every request is stored in 'cacheMemLcd' array (RAM) and by the [SSD1306_UpdateScreen (uint8_t)](#ssd1306_updatescreen) function is printed on the display.
   - added new function -> [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline). Possible depicted any line (horizontal, vertical, with slope).
   - possible to use for more than 1 display (not tested). 
   - **!!!** ~1kB RAM memory consumption.
-- [3.0.0](https://github.com/Matiasus/SSD1306/tree/v3.0.0) - simplified alphanumeric version
+- [3.0](https://github.com/Matiasus/SSD1306/tree/v3.0.0) - simplified alphanumeric version
   - displaying alphanumeric characters
   - for **one display** applicable
   - **only few RAM bytes** consumption
