@@ -81,7 +81,7 @@
   // AREA definition
   // ------------------------------------------------------------------------------------
   #define START_PAGE_ADDR           0
-  #define END_PAGE_ADDR             7     // 7 for 128x64, 3 for 128x32 version
+  #define END_PAGE_ADDR             3     // 7 for 128x64, 3 for 128x32 version
   #define START_COLUMN_ADDR         0
   #define END_COLUMN_ADDR           127
   #define RAM_X_END                 END_COLUMN_ADDR + 1

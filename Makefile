@@ -13,7 +13,7 @@
 # ------------------------------------------------------------------
 #
 # Final file
-TARGET      	= main
+TARGET        = main
 #
 # Library directory
 LIBDIR        = lib
@@ -22,7 +22,7 @@ LIBDIR        = lib
 DEVICE        = atmega328p
 #
 # Frequency
-FCPU          = 8000000
+FCPU          = 16000000
 #
 # Optimization
 OPTIMIZE      = Os
@@ -53,7 +53,7 @@ AVRSIZE       = avr-size
 SFLAGS        = --mcu=$(DEVICE) --format=avr
 #
 # Target and dependencies .c
-SOURCES      := $(wildcard *.c $(LIBDIR)/*.c)
+SOURCES      := $(wildcard *.c $(LIBDIR)/*.c $(LIBDIR)/*/*.c)
 #
 # Target and dependencies .o
 OBJECTS	      = $(SOURCES:.c=.o)
@@ -75,7 +75,7 @@ AVRDUDE_PORT  = /dev/ttyUSB0
 AVRDUDE_PROG  = usbasp
 #
 # AVRDUDE BAUD RATE
-AVRDUDE_BAUD  = 57600
+AVRDUDE_BAUD  = 19200
 #
 # AVRDUDE BAUD RATE
 AVROBJ_FORMAT = ihex
@@ -91,8 +91,8 @@ main: $(TARGET).hex
 # Create hex file
 $(TARGET).hex: $(TARGET).elf
 	$(OBJCOPY) $(OBJFLAGS) $(TARGET).elf $(TARGET).hex
+	@echo "-----------------------------------------------------------------------" 
 	$(AVRSIZE) $(TARGET).elf
-
 # 
 # Create .elf file
 $(TARGET).elf:$(OBJECTS) 
@@ -105,17 +105,24 @@ $(TARGET).elf:$(OBJECTS)
 
 # 
 # Program avr - send file to programmer
-flash: 
+flash:
+	@echo "-----------------------------------------------------------------------"
 	$(AVRDUDE) $(AVRDUDE_FLAGS) flash:w:$(TARGET).hex:i
 
 #
+# Size
+size: 
+	@echo "-----------------------------------------------------------------------"
+	$(AVRSIZE) -C --mcu=$(DEVICE) $(TARGET).elf
+
+#
 # Clean
-clean: 
+clean:
+	@echo "-----------------------------------------------------------------------"
 	rm -f $(OBJECTS) $(TARGET).elf $(TARGET).map
 
 #
 # Cleanall
-cleanall: 
+cleanall:
+	@echo "-----------------------------------------------------------------------"
 	rm -f $(OBJECTS) $(TARGET).hex $(TARGET).elf $(TARGET).map
-
-
