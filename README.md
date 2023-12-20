@@ -42,86 +42,122 @@ Prior defined for MCU Atmega328p / Atmega8 / Atmega16. Need to be carefull with 
 | SCL | PC0 | PC5 |
 | SDA | PC1 | PC4 |
 
+### Picture of hardware connection
+<img src="img/connection.png" alt="Hardware connection" width="600">
+
 ### Tested
-Library was tested and proved with **_0.96″ 128x64 and 128x32 OLED Display (SSD1306 driver)_** and **_Atmega328p_**.
+Library was tested and proved with **_0.96″ 128x64 and 0.91" 128x32 OLED Display (SSD1306 driver)_** and **Arduino UNO R3**. The Arduino was without a bootloader installed, it was only raw Atmega328P microcontroller. Communication was done through I2C (TWI) interface of Arduino UNO R3. This hardware configuration was chosen for simplicity.
 
 ## Init OLED Sequence
-Init sequence OLED display was defined according to page 64 (next to last page) of [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf).
+Init sequence OLED display was defined mainly according to page 64 (next to last page) of [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf).
 
+### Flowchart
 ```
 // +---------------------------+
-// |      Set MUX Ratio        |
+// |      Software Reset       |  // not tested yet, @source https://github.com/SmingHub/Sming/issues/501
 // +---------------------------+
-// |        0xA8, 0x3F         |
+// |           0xE4            |
 // +---------------------------+
-//              |
+//              ||
+// +---------------------------+
+// |        DISPLAY OFF        |
+// +---------------------------+
+// |           0xAE            |
+// +---------------------------+
+//              ||
+// +---------------------------+
+// |       Set MUX Ratio       |
+// +---------------------------+
+// |           0xA8            |
+// |           0x3F            |
+// +---------------------------+
+//              ||
+// +---------------------------+
+// |   Set Memory Addr  Mode   |
+// +---------------------------+
+// |           0x20            |
+// |           0x00            |
+// +---------------------------+
+//              ||
+// +---------------------------+
+// |      Set Start Line       |
+// +---------------------------+
+// |           0x40            |
+// +---------------------------+
+//              ||
 // +---------------------------+
 // |    Set Display Offset     |
 // +---------------------------+
-// |        0xD3, 0x00         |
+// |           0xD3            |
+// |           0x00            |
 // +---------------------------+
-//              |
-// +---------------------------+
-// |  Set Display Start Line   |
-// +---------------------------+
-// |          0x40             |
-// +---------------------------+
-//              |
+//              ||
 // +---------------------------+
 // |     Set Segment Remap     |
 // +---------------------------+
-// |       0xA0 / 0xA1         |
+// |       0xA0 or 0xA1        |
 // +---------------------------+
-//              |
+//              ||
 // +---------------------------+
 // |   Set COM Output Scan     |
 // |        Direction          |
 // +---------------------------+
-// |       0xC0 / 0xC8         |
+// |       0xC0 or 0xC8        |
 // +---------------------------+
-//              |
+//              ||
 // +---------------------------+
 // |   Set COM Pins hardware   |
 // |       configuration       |
 // +---------------------------+
-// |        0xDA, 0x02         |
+// |           0xDA            |
+// |      0x02 for 128x64      |
+// |      0x02 for 128x32      |
 // +---------------------------+
-//              |
+//              ||
 // +---------------------------+
 // |   Set Contrast Control    |
 // +---------------------------+
-// |        0x81, 0x7F         |
+// |           0x81            |
+// |           0x7F            |
 // +---------------------------+
-//              |
+//              ||
 // +---------------------------+
 // | Disable Entire Display On |
 // +---------------------------+
-// |          0xA4             |
+// |           0xA4            |
 // +---------------------------+
-//              |
+//              ||
 // +---------------------------+
 // |    Set Normal Display     |
 // +---------------------------+
-// |          0xA6             |
+// |           0xA6            |
 // +---------------------------+
-//              |
+//              ||
 // +---------------------------+
-// |    Set Osc Frequency      |
+// |  Set OSC Frequency Fosc   |
 // +---------------------------+
-// |       0xD5, 0x80          |
+// |           0xD5            |
+// |           0x80            |
 // +---------------------------+
-//              |
+//              ||
 // +---------------------------+
-// |    Enable charge pump     |
-// |        regulator          |
+// |     Enable charge pump    |
+// |         regulator         |
 // +---------------------------+
-// |       0x8D, 0x14          |
+// |           0x8D            |
+// |           0x14            |
 // +---------------------------+
-//              |
+//              ||
+// +---------------------------+
+// |     Deactivate Scroll     |
+// +---------------------------+
+// |           0x2E            |
+// +---------------------------+
+//              ||
 // +---------------------------+
 // |        Display On         |
 // +---------------------------+
-// |          0xAF             |
+// |           0xAF            |
 // +---------------------------+
 ```
 ## Functions
@@ -150,4 +186,3 @@ Init sequence OLED display was defined according to page 64 (next to last page) 
 ## Links
 - [Datasheet SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf)
 - [Atmega328](https://ww1.microchip.com/downloads/en/DeviceDoc/ATmega48A-PA-88A-PA-168A-PA-328-P-DS-DS40002061B.pdf)
-
