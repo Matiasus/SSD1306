@@ -21,11 +21,16 @@ C library is aimed for driving [0.96" OLED display with SSD1306 driver](#demonst
   - added new function -> [SSD1306_DrawLine (uint8_t, uint8_t, uint8_t, uint8_t)](#ssd1306_drawline). Possible depicted any line (horizontal, vertical, with slope).
   - possible to use for more than 1 display (not tested). 
   - **!!!** ~1kB RAM memory consumption.
-- [3.0.0](https://github.com/Matiasus/SSD1306/tree/v3.0.0) - simplified alphanumeric version
+- [3.0.x](https://github.com/Matiasus/SSD1306/tree/v3.0.1) - simplified alphanumeric version
   - displaying alphanumeric characters
   - for **one display** applicable
   - **only few RAM bytes** consumption
   - **!!!** no graphic functions like drawLine
+- [3.1.x](https://github.com/Matiasus/SSD1306/tree/v3.1.0) - simplified version with draw lines
+  - displaying alphanumeric characters with graphic functions like drawLine vertical & horizontal
+  - for **one display** applicable
+  - **only few RAM bytes** consumption
+  - horizontal scroll function added
 
 ## Dependencies
 - [font.h](https://github.com/Matiasus/SSD1306/blob/readme-edits/lib/font.h)
