@@ -32,16 +32,22 @@
  */
 int main(void)
 {
-  SSD1306_Init ();
+  SSD1306_Init (SSD1306_ADDR);
   SSD1306_ClearScreen ();
 
-  SSD1306_SetPosition (25, 0) ;
+  SSD1306_DrawLineHorizontal (0, 0, END_COLUMN_ADDR, 0x03);
+  SSD1306_DrawLineHorizontal (0, 2, END_COLUMN_ADDR, 0x18);
+  SSD1306_DrawLineHorizontal (0, END_PAGE_ADDR, END_COLUMN_ADDR, 0x80);
+  SSD1306_DrawLineVertical (0, 0, END_PAGE_ADDR);
+  SSD1306_DrawLineVertical (END_COLUMN_ADDR, 0, END_PAGE_ADDR);
+
+  SSD1306_SetPosition (25, 1) ;
   SSD1306_DrawString ("SSD1306", BOLD);
 
-  SSD1306_SetPosition (4, 2) ;
+  SSD1306_SetPosition (4, 3) ;
   SSD1306_DrawString ("by ", NORMAL);
   SSD1306_DrawString ("MATIASUS", NORMAL | UNDERLINE);
-  SSD1306_DrawString (" (C) 2022", NORMAL);
+  SSD1306_DrawString (" (C) 2024", NORMAL);
 
   // return value
   return 0;
