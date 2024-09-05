@@ -687,32 +687,6 @@ uint8_t SSD1306_DrawString (char *str, enum E_Font font)
 }
 
 /**
- * @desc    SSD1306 Draw String
- *
- * @param   char * string
- * @param   E_Font
- *
- * @return  uint8_t
- */
-uint8_t SSD1306_DrawSongName (char * str, enum E_Font font)
-{
-  uint8_t i = 0;                                                  // char counter
-  uint8_t n = 8;
-
-  // send characters of string
-  // -------------------------------------------------------------------------------------
-  while (i < n) {
-    if (str[i] == ' ') { 
-      i++;
-    } else {
-      SSD1306_DrawChar (str[i++], font);                          // send char
-    }
-  }
-
-  return SSD1306_SUCCESS;                                         // success
-}
-
-/**
  * @brief   SSD1306 Draw line vertical
  *
  * @param   uint8_t x {0 -> END_COLUMN_ADDRESS}
@@ -774,86 +748,6 @@ uint8_t SSD1306_DrawLineVertical (uint8_t x, uint8_t y, uint8_t height)
     return status;                                                // error
   }
   while (i++ <= height) {
-    status = TWI_MT_Send_Data (0xff);                             // send data col
-    if (SSD1306_SUCCESS != status) {                              // check status
-      return status;                                              // error
-    }
-  }
-
-  // TWI STOP
-  // -------------------------------------------------------------------------------------
-  TWI_Stop ();
-
-  return SSD1306_SUCCESS;                                         // success
-}
-
-/**
- * @brief   SSD1306 Draw rectangle
- *
- * @param   uint8_t x {0 -> END_COLUMN_ADDRESS}
- * @param   uint8_t y {0 -> END_PAGE_ADDR}
- * @param   uint8_t width
- * @param   uint8_t height
- * 
- * @return  uint8_t
- */
-uint8_t SSD1306_DrawRectangle (uint8_t x, uint8_t y, uint8_t width, uint8_t height)
-{
-  uint16_t i = 0;
-  uint8_t status = INIT_STATUS;                                   // TWI init status 0xFF
-  uint16_t loops;
-
-  if (((x + width) > END_COLUMN_ADDR) || 
-      ((y + height) > END_PAGE_ADDR)) {
-    return SSD1306_ERROR;
-  }
-
-  loops = (x + width) * (y + height);                             // num of loops
-
-  // TWI START & SLAW
-  // -----------------------------------------------------------------------------------
-  status = SSD1306_Send_StartAndSLAW (SSD1306_ADDR);              // start & SLAW
-  if (SSD1306_SUCCESS != status) {                                // check status
-    return status;                                                // error
-  }
-
-  // COLUMN
-  // -------------------------------------------------------------------------------------
-  status = SSD1306_Send_Command (SSD1306_SET_COLUMN_ADDR);        // 0x21
-  if (SSD1306_SUCCESS != status) {                                // check status
-    return status;                                                // error
-  }
-  status = SSD1306_Send_Command (x);                              // start COLUMN
-  if (SSD1306_SUCCESS != status) {                                // check status
-    return status;                                                // error
-  }
-  status = SSD1306_Send_Command (x + width);                      // end COLUMN
-  if (SSD1306_SUCCESS != status) {                                // check status
-    return status;                                                // error
-  }
-  _indexCol = x;                                                  // update column index
-  // PAGE
-  // -------------------------------------------------------------------------------------
-  status = SSD1306_Send_Command (SSD1306_SET_PAGE_ADDR);          // 0x22
-  if (SSD1306_SUCCESS != status) {                                // check status
-    return status;                                                // error
-  }
-  status = SSD1306_Send_Command (y);                              // start PAGE
-  if (SSD1306_SUCCESS != status) {                                // check status
-    return status;                                                // error
-  }
-  status = SSD1306_Send_Command (y + height);                     // end PAGE
-  if (SSD1306_SUCCESS != status) {                                // check status
-    return status;                                                // error
-  }
-  _indexPage = y;                                                 // update column index
-  // TWI control byte data stream
-  // -----------------------------------------------------------------------------------
-  status = TWI_MT_Send_Data (SSD1306_DATA_STREAM);                // send data 0x40
-  if (SSD1306_SUCCESS != status) {                                // check status
-    return status;                                                // error
-  }
-  while (i++ <= loops) {
     status = TWI_MT_Send_Data (0xff);                             // send data col
     if (SSD1306_SUCCESS != status) {                              // check status
       return status;                                              // error

@@ -248,16 +248,6 @@
   uint8_t SSD1306_DrawString (char *, enum E_Font);
 
   /**
-   * @desc    SSD1306 Draw String
-   *
-   * @param   char * string
-   * @param   E_Font
-   *
-   * @return  uint8_t
-   */
-  uint8_t SSD1306_DrawSongName (char *, enum E_Font);
-
-  /**
    * @brief   SSD1306 Draw line horizontal
    *
    * @param   uint8_t x
@@ -279,18 +269,6 @@
    * @return  uint8_t
    */
   uint8_t SSD1306_DrawLineVertical (uint8_t, uint8_t, uint8_t);
-
-  /**
-   * @brief   SSD1306 Draw rectangle
-   *
-   * @param   uint8_t x {0 -> END_COLUMN_ADDRESS}
-   * @param   uint8_t y {0 -> END_PAGE_ADDR}
-   * @param   uint8_t width
-   * @param   uint8_t height
-   * 
-   * @return  uint8_t
-   */
-  uint8_t SSD1306_DrawRectangle (uint8_t, uint8_t, uint8_t, uint8_t);
 
   /**
    * @brief   SSD1306 Horizontal Scroll Start
