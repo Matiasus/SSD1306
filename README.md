@@ -110,7 +110,7 @@ Init sequence OLED display was defined mainly according to page 64 (next to last
 // |       configuration       |
 // +---------------------------+
 // |           0xDA            |
-// |      0x02 for 128x64      |
+// |      0x12 for 128x64      |
 // |      0x02 for 128x32      |
 // +---------------------------+
 //              ||
