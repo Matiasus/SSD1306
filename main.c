@@ -47,7 +47,7 @@ int main(void)
   SSD1306_SetPosition (4, 3) ;
   SSD1306_DrawString ("by ", NORMAL);
   SSD1306_DrawString ("MATIASUS", NORMAL | UNDERLINE);
-  SSD1306_DrawString (" (C) 2024", NORMAL);
+  SSD1306_DrawString (" (C) 2025", NORMAL);
 
   // return value
   return 0;

@@ -1,87 +1,48 @@
-#
-# @description  Makefile for compiling, linking and flashing code into microcontroller atmega16
+# -----------------------------------------------------------------------------------
+# @description  Makefile for compiling, linking and flashing code 
+#               into microcontroller Atmega328p
 #
 # @author       Marian Hrinko
-# @datum        06.097.2020
-# @notes				Suffix Replacement within a macro: $(name:string1=string2)
+# @date         02.06.2025
+# @notes        Suffix Replacement within a macro: $(name:string1=string2)
 #               For each word in 'name' replace 'string1' with 'string2'
 #               For example $(DEPENDENCIES:.c=.o)
 # @inspiration  https://www.cs.swarthmore.edu/~newhall/unixhelp/howto_makefiles.html
 #               https://wiki.hacdc.org/index.php/AVR_Makefile
 #
+# -----------------------------------------------------------------------------------
+
 # BASIC CONFIGURATION, SETTINGS
-# ------------------------------------------------------------------
-#
-# Final file
-TARGET      	= main
-#
-# Library directory
+# -----------------------------------------------------------------------------------
+TARGET        = main
 LIBDIR        = lib
-#
-# Type of microcontroller
 DEVICE        = atmega328p
-#
-# Frequency
-FCPU          = 8000000
-#
-# Optimization
+FCPU          = 16000000
 OPTIMIZE      = Os
-#
-# Type of compiler
 CC            = avr-gcc
-#
-# Compiler flags
 CFLAGS        = -g -Wall -DF_CPU=$(FCPU) -mmcu=$(DEVICE) -$(OPTIMIZE)
-#
-# Includes
 INCLUDES      = -I.
-#
-# Libraries
 LIBS          = -L$(LIBDIR)
-#
-# Object copy
 OBJCOPY       = avr-objcopy
-#
-# Objcopy, create hex file flags 
+
+# Objcopy, create hex file flags
+# -----------------------------------------------------------------------------------
 # -R .eeprom -O ihex or -j .data -j .text -O ihex
-OBJFLAGS    	= -j .data -j .text -O ihex
-#
-# Size of file
+OBJFLAGS      = -j .data -j .text -O ihex
 AVRSIZE       = avr-size
-#
-# Size flags
 SFLAGS        = --mcu=$(DEVICE) --format=avr
-#
-# Target and dependencies .c
-SOURCES      := $(wildcard *.c $(LIBDIR)/*.c)
-#
-# Target and dependencies .o
+SOURCES      := $(wildcard *.c $(LIBDIR)/*.c $(LIBDIR)/*/*.c)
 OBJECTS	      = $(SOURCES:.c=.o)
 
 # AVRDUDE CONFIGURATION, SETTINGS
-# -------------------------------------------------------------------
-
-#
-# AVRDUDE
+# -----------------------------------------------------------------------------------
 AVRDUDE       = avrdude
-#
-# AVRDUDE DEVICE
-AVRDUDE_MMCU  = m328p
-#
-# AVRDUDE PORT
-AVRDUDE_PORT  = /dev/ttyUSB0
-#
-# AVRDUDE PROGRAMMER
-AVRDUDE_PROG  = usbasp
-#
-# AVRDUDE BAUD RATE
-AVRDUDE_BAUD  = 57600
-#
-# AVRDUDE BAUD RATE
+MMCU          = m328p
+PORT          = /dev/ttyUSB0
+PROGRAMMER    = usbasp
+BAUD_RATE     = 19200
 AVROBJ_FORMAT = ihex
-#
-# AVRDUDE FLAGS
-AVRDUDE_FLAGS = -p $(AVRDUDE_MMCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROG) -b $(AVRDUDE_BAUD) -u -U
+AVRDUDE_FLAGS = -p $(MMCU) -P $(PORT) -c $(PROGRAMMER) -b $(BAUD_RATE) -u -U
 
 # 
 # Create file to programmer
@@ -91,31 +52,33 @@ main: $(TARGET).hex
 # Create hex file
 $(TARGET).hex: $(TARGET).elf
 	$(OBJCOPY) $(OBJFLAGS) $(TARGET).elf $(TARGET).hex
+	@echo "-----------------------------------------------------------------------" 
 	$(AVRSIZE) $(TARGET).elf
-
 # 
 # Create .elf file
 $(TARGET).elf:$(OBJECTS) 
 	$(CC) $(CFLAGS) $(OBJECTS) -o $(TARGET).elf
-
 #
 # Create object files
 %.o: %.c
 	 $(CC) $(CFLAGS) -c $< -o $@
-
 # 
 # Program avr - send file to programmer
-flash: 
+flash:
+	@echo "-----------------------------------------------------------------------"
 	$(AVRDUDE) $(AVRDUDE_FLAGS) flash:w:$(TARGET).hex:i
-
+#
+# Size
+size: 
+	@echo "-----------------------------------------------------------------------"
+	$(AVRSIZE) -C --mcu=$(DEVICE) $(TARGET).elf
 #
 # Clean
-clean: 
+clean:
+	@echo "-----------------------------------------------------------------------"
 	rm -f $(OBJECTS) $(TARGET).elf $(TARGET).map
-
 #
 # Cleanall
-cleanall: 
+cleanall:
+	@echo "-----------------------------------------------------------------------"
 	rm -f $(OBJECTS) $(TARGET).hex $(TARGET).elf $(TARGET).map
-
-

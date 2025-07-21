@@ -26,7 +26,7 @@
 
 // @const uint8_t - List of init commands according to datasheet SSD1306
 const uint8_t INIT_SSD1306[] PROGMEM = {
-  17,                                                             // number of initializers
+  19,                                                             // number of initializers
   //SSD1306_RESET, 0,                                               // 0xE4 = Software Reset?
   SSD1306_DISPLAY_OFF, 0,                                         // 0xAE = Set Display OFF
   SSD1306_SET_MUX_RATIO, 1, 0x3F,                                 // 0xA8 - 0x3F for 128 x 64 version (64MUX)
@@ -51,6 +51,8 @@ const uint8_t INIT_SSD1306[] PROGMEM = {
   SSD1306_VCOM_DESELECT, 1, 0x20,                                 // Set V COMH Deselect, reset value 0x22 = 0,77xUcc
   SSD1306_SET_CHAR_REG, 1, 0x14,                                  // 0x8D, Enable charge pump during display on
   SSD1306_DEACT_SCROLL, 0,                                        // 0x2E
+  SSD1306_SET_COLUMN_ADDR, 2, 0x00, END_COLUMN_ADDR,              //
+  SSD1306_SET_PAGE_ADDR, 2, 0x00, END_PAGE_ADDR,                  //
   SSD1306_DISPLAY_ON, 0                                           // 0xAF = Set Display ON
 };
 
