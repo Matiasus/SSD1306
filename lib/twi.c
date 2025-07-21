@@ -6,7 +6,7 @@
  *              Written by Marian Hrinko (mato.hrinko@gmail.com)
  *
  * @author      Marian Hrinko
- * @datum       06.09.2020
+ * @date        06.09.2020
  * @file        twi.c
  * @tested      AVR Atmega16, ATmega8, Atmega328
  *
@@ -55,20 +55,15 @@ void TWI_Init (void)
  */
 char TWI_MT_Start (void)
 {
-  // null status flag
-  TWI_TWSR &= ~0xA8;
-  // START
-  // -------------------------------------------------------------------------------------
-  // request for bus
+  TWI_TWSR &= ~0xA8;                                              // null status flag
+
   TWI_START();
-  // wait till flag set
   TWI_WAIT_TILL_TWINT_IS_SET();
-  // test if start or repeated start acknowledged
+
   if ((TWI_STATUS != TWI_START_ACK) && (TWI_STATUS != TWI_REP_START_ACK)) {
-    // return status
     return TWI_STATUS;
   }
-  // success
+ 
   return SUCCESS;
 }
 
@@ -79,22 +74,17 @@ char TWI_MT_Start (void)
  *
  * @return  char
  */
-char TWI_MT_Send_SLAW (char address)
+char TWI_MT_Send_SLAW(char address)
 {
-  // SLA+W
-  // -------------------------------------------------------------------------------------
-  TWI_TWDR = (address << 1);
-  // enable
+  TWI_TWDR = (address << 1);                                      // SLA+W
+
   TWI_ENABLE();
-  // wait till flag set
   TWI_WAIT_TILL_TWINT_IS_SET();
 
-  // test if SLA with WRITE acknowledged
   if (TWI_STATUS != TWI_MT_SLAW_ACK) {
-    // return status
     return TWI_STATUS;
   }
-  // success
+
   return SUCCESS;
 }
 
@@ -105,22 +95,16 @@ char TWI_MT_Send_SLAW (char address)
  *
  * @return  char
  */
-char TWI_MT_Send_Data (char data)
+char TWI_MT_Send_Data(char data)
 {
-  // DATA
-  // -------------------------------------------------------------------------------------
-  TWI_TWDR = data;
-  // enable
+  TWI_TWDR = data;                                                // DATA
+
   TWI_ENABLE();
-  // wait till flag set
   TWI_WAIT_TILL_TWINT_IS_SET();
 
-  // test if data acknowledged
   if (TWI_STATUS != TWI_MT_DATA_ACK) {
-    // return status
     return TWI_STATUS;
   }
-  // success
   return SUCCESS;
 }
 
@@ -131,22 +115,17 @@ char TWI_MT_Send_Data (char data)
  *
  * @return  char
  */
-char TWI_MR_Send_SLAR (char address)
+char TWI_MR_Send_SLAR(char address)
 {
-  // SLA+R
-  // -------------------------------------------------------------------------------------
-  TWI_TWDR = (address << 1) | 0x01;
-  // enable
+  TWI_TWDR = (address << 1) | 0x01;                               // SLA+R
+
   TWI_ENABLE();
-  // wait till flag set
   TWI_WAIT_TILL_TWINT_IS_SET();
 
-  // test if SLA with READ acknowledged
   if (TWI_STATUS != TWI_MR_SLAR_ACK) {
-    // return status
     return TWI_STATUS;
   }
-  // success
+
   return SUCCESS;
 }
 
@@ -157,12 +136,9 @@ char TWI_MR_Send_SLAR (char address)
  *
  * @return  void
  */
-void TWI_Stop (void)
+void TWI_Stop(void)
 {
-  // End TWI
-  // -------------------------------------------------------------------------------------
-  // send stop sequence
-  TWI_STOP ();
-  // wait for TWINT flag is set
-//  TWI_WAIT_TILL_TWINT_IS_SET();
+
+  TWI_STOP();
+  //TWI_WAIT_TILL_TWINT_IS_SET();
 }

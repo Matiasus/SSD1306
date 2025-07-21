@@ -6,11 +6,11 @@
  *              Written by Marian Hrinko (mato.hrinko@gmail.com)
  *
  * @author      Marian Hrinko
- * @datum       06.09.2020
+ * @date        06.09.2020
  * @file        twi.h
  * @tested      AVR Atmega16, ATmega8, Atmega328
  *
- * @depend      avr/io.h
+ * @depend      <avr/io.h>
  * --------------------------------------------------------------------------------------+
  * @usage       Basic Master Transmit Operation
  */
@@ -131,7 +131,7 @@
    *
    * @return  void
    */
-  void TWI_Init (void);
+  void TWI_Init(void);
 
   /**
    * @desc    TWI MT Start
@@ -140,7 +140,7 @@
    *
    * @return  char
    */
-  char TWI_MT_Start (void);
+  char TWI_MT_Start(void);
 
   /**
    * @desc    TWI Send SLAW
@@ -149,7 +149,7 @@
    *
    * @return  unsigned char
    */
-  char TWI_MT_Send_SLAW (char);
+  char TWI_MT_Send_SLAW(char);
 
   /**
    * @desc    TWI Send data
@@ -158,7 +158,7 @@
    *
    * @return  char
    */
-  char TWI_MT_Send_Data (char);
+  char TWI_MT_Send_Data(char);
 
   /**
    * @desc    TWI Send SLAR
@@ -167,7 +167,7 @@
    *
    * @return  unsigned char
    */
-  char TWI_MR_Send_SLAR (char);
+  char TWI_MR_Send_SLAR(char);
 
   /**
    * @desc    TWI stop
@@ -176,6 +176,6 @@
    *
    * @return  void
    */
-  void TWI_Stop (void);
+  void TWI_Stop(void);
   
 #endif

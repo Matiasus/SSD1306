@@ -7,16 +7,16 @@
  *
  * @author      Marian Hrinko
  * @date        06.10.2020
- * @update      21.11.2022
+ * @update      21.07.2025
  * @file        ssd1306.h
  * @version     3.0
  * @tested      AVR Atmega328p
  *
- * @depend      font.h, twi.h
+ * @depend      font.h, twi.h, util/delay.h
  * -------------------------------------------------------------------------------------+
- * @descr       Version 1.0 -> applicable for 1 display
- *              Version 2.0 -> rebuild to 'cacheMemLcd' array
- *              Version 3.0 -> simplified alphanumeric version
+ * @descr       Version 1.x.x -> applicable for 1 display
+ *              Version 2.x.x -> rebuild to 'cacheMemLcd' array
+ *              Version 3.x.x -> simplified alphanumeric version for 1 display
  * -------------------------------------------------------------------------------------+
  * @usage       Basic Setup for OLED Display
  */
@@ -131,7 +131,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_Send_StartAndSLAW (uint8_t);
+  uint8_t SSD1306_Send_StartAndSLAW(uint8_t);
 
   /**
    * @brief   SSD1306 Send command
@@ -140,7 +140,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_Send_Command (uint8_t);
+  uint8_t SSD1306_Send_Command(uint8_t);
 
   /**
    * @brief   SSD1306 Init
@@ -149,7 +149,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_Init (uint8_t);
+  uint8_t SSD1306_Init(uint8_t);
 
   /**
    * @brief   SSD1306 Clear screen
@@ -158,7 +158,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_ClearScreen (void);
+  uint8_t SSD1306_ClearScreen(void);
 
   /**
    * @desc    SSD1306 Clear Page
@@ -167,7 +167,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_ClearPage (uint8_t);
+  uint8_t SSD1306_ClearPage(uint8_t);
 
   /**
    * @desc    SSD1306 Clear screen
@@ -177,7 +177,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_ClearPageFromToEnd (uint8_t, uint8_t);
+  uint8_t SSD1306_ClearPageFromToEnd(uint8_t, uint8_t);
 
   /**
    * @brief   SSD1306 Normal colors
@@ -186,7 +186,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_NormalScreen (void);
+  uint8_t SSD1306_NormalScreen(void);
 
   /**
    * @brief   SSD1306 Inverse colors
@@ -195,7 +195,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_InverseScreen (void);
+  uint8_t SSD1306_InverseScreen(void);
 
   /**
    * @brief   SSD1306 Update text position
@@ -204,7 +204,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_UpdatePosition (uint8_t, uint8_t);
+  uint8_t SSD1306_UpdatePosition(uint8_t, uint8_t);
 
   /**
    * @brief   SSD1306 Set position
@@ -214,7 +214,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_SetPosition (uint8_t, uint8_t);
+  uint8_t SSD1306_SetPosition(uint8_t, uint8_t);
 
   /**
    * @brief   SSD1306 Set window
@@ -226,7 +226,7 @@
    *
    * @return  void
    */
-  uint8_t SSD1306_SetWindow (uint8_t, uint8_t, uint8_t, uint8_t);
+  uint8_t SSD1306_SetWindow(uint8_t, uint8_t, uint8_t, uint8_t);
 
   /**
    * @brief   SSD1306 Draw character
@@ -236,7 +236,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_DrawChar (char, enum E_Font);
+  uint8_t SSD1306_DrawChar(char, enum E_Font);
 
   /**
    * @brief   SSD1306 Draw string
@@ -245,7 +245,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_DrawString (char *, enum E_Font);
+  uint8_t SSD1306_DrawString(char *, enum E_Font);
 
   /**
    * @brief   SSD1306 Draw line horizontal
@@ -257,7 +257,7 @@
    * 
    * @return  uint8_t
    */
-  uint8_t SSD1306_DrawLineHorizontal (uint8_t, uint8_t, uint8_t, enum E_Line);
+  uint8_t SSD1306_DrawLineHorizontal(uint8_t, uint8_t, uint8_t, enum E_Line);
 
   /**
    * @brief   SSD1306 Draw line vertical
@@ -268,7 +268,7 @@
    * 
    * @return  uint8_t
    */
-  uint8_t SSD1306_DrawLineVertical (uint8_t, uint8_t, uint8_t);
+  uint8_t SSD1306_DrawLineVertical(uint8_t, uint8_t, uint8_t);
 
   /**
    * @brief   SSD1306 Horizontal Scroll Start
@@ -279,7 +279,7 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_HorizontalScroll (uint8_t, uint8_t, uint8_t);
+  uint8_t SSD1306_HorizontalScroll(uint8_t, uint8_t, uint8_t);
 
   /**
    * @brief   SSD1306 Horizontal Scroll Stop
@@ -288,6 +288,6 @@
    *
    * @return  uint8_t
    */
-  uint8_t SSD1306_HorizontalScrollStop (uint8_t);
+  uint8_t SSD1306_HorizontalScrollStop(uint8_t);
 
 #endif
